@@ -240,6 +240,7 @@ public class AppFrame extends JFrame {
     JMenu jMenuHelp = new JMenu();
     
     JMenuItem jMenuHelpGuide = new JMenuItem();
+    JMenuItem jMenuOfflineHelpGuide = new JMenuItem();
     JMenuItem jMenuHelpWeb = new JMenuItem();
     JMenuItem jMenuHelpBug = new JMenuItem();
     JMenuItem jMenuHelpAbout = new JMenuItem();
@@ -275,7 +276,16 @@ public class AppFrame extends JFrame {
             }
         });
         jMenuHelp.setText(Local.getString("Help"));
-        
+
+        jMenuOfflineHelpGuide.setText(Local.getString("Offline user's guide"));
+        jMenuOfflineHelpGuide.setIcon(new ImageIcon(AppFrame.class.getResource(
+                "resources/icons/help.png")));
+        jMenuOfflineHelpGuide.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                jMenuOfflineHelpGuide_actionPerformed(e);
+            }
+        });
+
         jMenuHelpGuide.setText(Local.getString("Online user's guide"));
         jMenuHelpGuide.setIcon(new ImageIcon(AppFrame.class.getResource(
                 "resources/icons/help.png")));
@@ -463,6 +473,7 @@ public class AppFrame extends JFrame {
         jMenuFile.add(jMenuFileExit);
         
         jMenuHelp.add(jMenuHelpGuide);
+        jMenuHelp.add(jMenuOfflineHelpGuide);
         jMenuHelp.add(jMenuHelpWeb);
         jMenuHelp.add(jMenuHelpBug);
         jMenuHelp.addSeparator();
@@ -643,7 +654,11 @@ public class AppFrame extends JFrame {
     protected void jMenuHelpGuide_actionPerformed(ActionEvent e) {
         Util.runBrowser(App.GUIDE_URL);
     }
-    
+
+    protected void jMenuOfflineHelpGuide_actionPerformed(ActionEvent e) {
+        Util.runBrowser(App.OFFLINE_GUIDE_URL);
+    }
+
     //File | Exit action performed
     public void doExit() {
         if (Configuration.get("ASK_ON_EXIT").equals("yes")) {
