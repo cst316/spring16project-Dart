@@ -1,0 +1,5 @@
+#!/bin/bash
+for i in $(cat links) ; do 
+    echo $i 
+    wget http://memoranda.sourceforge.net/doc/1.0/files/$i
+done
