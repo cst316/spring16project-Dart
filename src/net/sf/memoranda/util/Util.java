@@ -7,14 +7,18 @@
  * Copyright (c) 2003 Memoranda team: http://memoranda.sf.net
  */
 package net.sf.memoranda.util;
+import java.awt.Desktop;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.IOException;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.Calendar;
 import java.util.HashSet;
-import java.util.Set;
 import java.util.Iterator;
+import java.util.Random;
+import java.util.Set;
 
 import javax.swing.JFileChooser;
 
@@ -22,7 +26,6 @@ import net.sf.memoranda.date.CalendarDate;
 import net.sf.memoranda.ui.App;
 import net.sf.memoranda.ui.AppFrame;
 import net.sf.memoranda.ui.ExceptionDialog;
-import java.util.Random;
 
 /**
  *
@@ -92,8 +95,38 @@ public class Util {
     public static String getCDATA(String s) {
       return "<![CDATA["+s+"]]>";
     }
-    
+
+    /**
+     * Opens the system's default browser at the given URL.
+     *
+     * Deprecates runBrowserBackup
+     *
+     * @param url A URL from which a valid java.net.URI can be built.
+     */
     public static void runBrowser(String url) {
+        try {
+            Desktop.getDesktop().browse(new URI(url));
+        } catch (IOException | SecurityException | URISyntaxException error) {
+            // Either there is no default browser (IOEx) or the system security
+            // is preventing this process from starting a subprocess.
+            // In that case let's try the old method of asking the user
+            // to explicitly choose an executable to use for the help page.
+            //
+            // The URI syntax error would be a programming error.
+            runBrowserBackup(url);
+        }
+    }
+
+    /**
+     * Opens a prompt for the user to select an executable to use for
+     * browsing to the given URL.
+     *
+     * Deprecated by runBrowser
+     *
+     * @param url
+     */
+    @Deprecated
+    public static void runBrowserBackup(String url) {
         if (!checkBrowser())
             return;
         String commandLine = MimeTypesList.getAppList().getBrowserExec()+" "+url;
