@@ -19,6 +19,7 @@ import javax.swing.SwingUtilities;
 import javax.swing.event.HyperlinkEvent;
 import javax.swing.event.HyperlinkListener;
 import javax.swing.JOptionPane;
+import javax.swing.JCheckBox;
 
 import net.sf.memoranda.CurrentProject;
 import net.sf.memoranda.EventNotificationListener;
@@ -46,6 +47,14 @@ public class AgendaPanel extends JPanel {
 	JButton historyBackB = new JButton();
 	JToolBar toolBar = new JToolBar();
 	JButton historyForwardB = new JButton();
+
+	// Buttons moved from ProjectsPanel.java
+	JButton ppNewProject = new JButton();
+	JButton ppProperties = new JButton();
+	JButton ppDeleteProject = new JButton();
+	JButton ppOpenProject = new JButton();
+	JCheckBox ppShowActiveOnlyChB = new JCheckBox();
+	// end copy
 	JButton export = new JButton();
 	JEditorPane viewer = new JEditorPane("text/html", "");
 	String[] priorities = {"Muy Alta","Alta","Media","Baja","Muy Baja"};
@@ -236,6 +245,11 @@ public class AgendaPanel extends JPanel {
 		this.add(scrollPane, BorderLayout.CENTER);
 		toolBar.add(historyBackB, null);
 		toolBar.add(historyForwardB, null);
+		toolBar.add(ppNewProject, null);
+		toolBar.add(ppProperties, null);
+		toolBar.add(ppDeleteProject, null);
+		toolBar.add(ppOpenProject, null);
+		toolBar.add(ppShowActiveOnlyChB, null);
 		toolBar.addSeparator(new Dimension(8, 24));
 
 		this.add(toolBar, BorderLayout.NORTH);
@@ -283,12 +297,12 @@ public class AgendaPanel extends JPanel {
 		//			public void actionPerformed(ActionEvent e) {
 		//				toggleShowActiveOnly_actionPerformed(e);
 		//			}
-		//		});		
+		//		});
 		//		boolean isShao =
 		//			(Context.get("SHOW_ACTIVE_TASKS_ONLY") != null)
 		//				&& (Context.get("SHOW_ACTIVE_TASKS_ONLY").equals("true"));
 		//		ppShowActiveOnlyChB.setSelected(isShao);
-		//		toggleShowActiveOnly_actionPerformed(null);		
+		//		toggleShowActiveOnly_actionPerformed(null);
 	}
 
 	public void refresh(CalendarDate date) {
@@ -317,13 +331,13 @@ public class AgendaPanel extends JPanel {
 	//		/*if (taskTable.isShowActiveOnly()) {
 	//			// is true, toggle to false
 	//			taskTable.setShowActiveOnly(false);
-	//			//showActiveOnly.setToolTipText(Local.getString("Show Active Only"));			
+	//			//showActiveOnly.setToolTipText(Local.getString("Show Active Only"));
 	//		}
 	//		else {
 	//			// is false, toggle to true
 	//			taskTable.setShowActiveOnly(true);
-	//			showActiveOnly.setToolTipText(Local.getString("Show All"));			
-	//		}*/	    
+	//			showActiveOnly.setToolTipText(Local.getString("Show All"));
+	//		}*/
 	//		refresh(CurrentDate.get());
 	////		parentPanel.updateIndicators();
 	//		//taskTable.updateUI();
