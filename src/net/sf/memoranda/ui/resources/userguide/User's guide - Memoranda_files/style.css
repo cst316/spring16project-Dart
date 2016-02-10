@@ -1,0 +1,13 @@
+body, td {font-family: Verdana, Arial, Helvetica, sans-serif; font-size:70%}
+.content {padding-left:25px; padding-top:10px; padding-right:10px; padding-bottom:10px}
+h1 {font-size:180%; font-weight:normal}
+h2 {font-size:130%; background-color:#F0F0F0; font-weight:normal}
+.menu {font-size:120%}
+.menu ul li {margin-bottom:5px}
+.copyright {margin:10 10 10 10}
+.section {background-color:#d7d9e5; padding:5 5 5 5}
+.sectionHeader {background-color: #878995; color:#F0F0F0; font-weight:bold; padding:5 5 5 5; border-bottom:1px solid #FFFFFF}
+.subscrForm {margin:0 0 0 0}
+.subscrForm input {font-family: Verdana, Arial, Helvetica, sans-serif; font-size:8pt}
+.foreword { margin-top:5px}
+.section p { margin-top:0 }
