@@ -5,11 +5,17 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Point;
 import java.awt.event.ActionEvent;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.awt.event.KeyListener;
-import java.awt.event.KeyEvent;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.net.MalformedURLException;
+import java.net.URI;
+import java.net.URISyntaxException;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -30,8 +36,6 @@ import net.sf.memoranda.util.Local;
 import net.sf.memoranda.util.MimeType;
 import net.sf.memoranda.util.MimeTypesList;
 import net.sf.memoranda.util.Util;
-
-import java.io.*;
 
 /*$Id: ResourcesPanel.java,v 1.13 2007/03/20 08:22:41 alexeya Exp $*/
 public class ResourcesPanel extends JPanel {
@@ -211,11 +215,17 @@ public class ResourcesPanel extends JPanel {
             	CurrentProject.getResourcesList().addResource(fpath, false, true);
             }
             else
-            	CurrentProject.getResourcesList().addResource(fpath);            	     	
-            
+            	CurrentProject.getResourcesList().addResource(fpath);
             resourcesTable.tableChanged();
         }
         else {
+            try {
+                (new URI(dlg.urlField.getText())).toURL();
+            } catch (URISyntaxException | MalformedURLException | IllegalArgumentException error) {
+                JOptionPane.showMessageDialog(null,
+                        "The provided interet address could not be used.\nPlease be sure to include the http:// or https:// in your address.");
+                return;
+            }
             if (!Util.checkBrowser())
                 return;
             CurrentProject.getResourcesList().addResource(dlg.urlField.getText(), true, false);
