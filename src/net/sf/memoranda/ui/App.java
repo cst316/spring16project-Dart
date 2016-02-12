@@ -23,8 +23,9 @@ public class App {
 	// boolean packFrame = false;
 
 	static AppFrame frame = null;
-	
 	public static final String GUIDE_URL = "http://memoranda.sourceforge.net/guide.html";
+	// public static final String OFFLINE_GUIDE_URL = App.class.getResource(".") + "resources/userguide/User's%20guide%20-%20Memoranda.html";
+	public static final String OFFLINE_GUIDE_URL = App.class.getResource(".") + "resources/userguide/index.html";
 	public static final String BUGS_TRACKER_URL = "http://sourceforge.net/tracker/?group_id=90997&atid=595566";
 	public static final String WEBSITE_URL = "http://memoranda.sourceforge.net";
 

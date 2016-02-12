@@ -113,6 +113,8 @@ public class Util {
             // to explicitly choose an executable to use for the help page.
             //
             // The URI syntax error would be a programming error.
+            System.out.println(error.getMessage());
+            System.out.println(url);
             runBrowserBackup(url);
         }
     }
