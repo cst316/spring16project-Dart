@@ -223,7 +223,7 @@ public class ResourcesPanel extends JPanel {
                 (new URI(dlg.urlField.getText())).toURL();
             } catch (URISyntaxException | MalformedURLException | IllegalArgumentException error) {
                 JOptionPane.showMessageDialog(null,
-                        "The provided interet address could not be used.\nPlease be sure to include the http:// or https:// in your address.");
+                        "The provided internet address could not be used.\nPlease be sure to include the http:// or https:// in your address.");
                 return;
             }
             if (!Util.checkBrowser())
