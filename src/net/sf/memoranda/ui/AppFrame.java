@@ -112,7 +112,6 @@ public class AppFrame extends JFrame {
             } else {
             	App.closeWindow();
             }
-
         }
     };
 
