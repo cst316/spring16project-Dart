@@ -108,7 +108,11 @@ public class AppFrame extends JFrame {
     public Action minimizeAction = new AbstractAction("Close the window") {
         public void actionPerformed(ActionEvent e) {
         	// ajcallos 2/16/2016
-            App.disposeWindow();
+            if (SystemTray.isSupported()){
+            	App.disposeWindow();
+            } else {
+            	App.closeWindow();
+            }
         }
     };
 
