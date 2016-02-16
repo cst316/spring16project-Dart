@@ -13,6 +13,15 @@ import javax.swing.UIManager;
 import net.sf.memoranda.EventsScheduler;
 import net.sf.memoranda.util.Configuration;
 
+// ajcallos 2/16/2016
+import java.awt.SystemTray;
+import java.awt.TrayIcon;
+import javax.swing.ImageIcon;
+import java.awt.MenuItem;
+import java.awt.PopupMenu;
+import java.awt.AWTException;
+import java.awt.event.*;
+
 /**
  *
  * Copyright (c) 2003 Memoranda Team. http://memoranda.sf.net
@@ -38,8 +47,6 @@ public class App {
 
 	public static final String VERSION_INFO = "@VERSION@";
 	public static final String BUILD_INFO = "@BUILD@";
-
-	/*========================================================================*/
 
 	public static AppFrame getFrame() {
 		return frame;
@@ -98,6 +105,42 @@ public class App {
 		}
 		if (!Configuration.get("SHOW_SPLASH").equals("no"))
 			splash.dispose();
+		
+		// ajcallos 2/16/2016
+		if (SystemTray.isSupported()){
+			try {
+				initTray();
+			} catch (AWTException ex){
+				//TODO:
+			}
+		} 
+	}
+	
+	/** 
+	 * Initializes the Memoranda icon in the system tray
+	 * Uses the oracle example at https://docs.oracle.com/javase/tutorial/uiswing/misc/systemtray.html as the baseline
+	 * @author ajcallos 
+	 * added 2/16/2016 
+	 */
+	private void initTray() throws AWTException	{
+		final String iconPath = "resources/memorandaTrayIcon.gif";
+		final PopupMenu trayPopupMenu = new PopupMenu();
+		final TrayIcon trayIcon = new TrayIcon(new ImageIcon(App.class.getResource(iconPath)).getImage());
+		final SystemTray tray = SystemTray.getSystemTray();
+		
+		MenuItem exitItem = new MenuItem("Exit");
+		
+		trayPopupMenu.add(exitItem);
+		
+		trayIcon.setPopupMenu(trayPopupMenu);
+		tray.add(trayIcon);
+		
+		exitItem.addActionListener(new ActionListener(){
+			public void actionPerformed(ActionEvent e) {
+				tray.remove(trayIcon);
+				System.exit(0);
+			}
+		});
 	}
 
 	void init() {
@@ -136,7 +179,6 @@ public class App {
 		frame.setVisible(true);
 		frame.toFront();
 		frame.requestFocus();
-
 	}
 
 	public static void closeWindow() {
