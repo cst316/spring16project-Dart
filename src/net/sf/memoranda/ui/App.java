@@ -133,7 +133,6 @@ public class App {
 		trayIcon.setPopupMenu(trayPopupMenu);
 		tray.add(trayIcon);
 		
-		// Sets exit action
 		exitItem.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e) {
 				tray.remove(trayIcon);
