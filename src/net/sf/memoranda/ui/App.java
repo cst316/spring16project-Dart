@@ -133,6 +133,7 @@ public class App {
 		trayIcon.setPopupMenu(trayPopupMenu);
 		tray.add(trayIcon);
 		
+		// Sets exit action
 		exitItem.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e) {
 				tray.remove(trayIcon);
@@ -205,8 +206,7 @@ public class App {
 	public static void disposeWindow() {
 		if (frame == null)
 			return;
-		// ajcallos 2/16/2016 changed frame.dispose() to System.exit()
-		System.exit(0);
+		frame.dispose();
 	}
 
 	/**
