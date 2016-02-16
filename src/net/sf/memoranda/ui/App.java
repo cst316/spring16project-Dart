@@ -206,7 +206,8 @@ public class App {
 	public static void disposeWindow() {
 		if (frame == null)
 			return;
-		frame.dispose();
+		// ajcallos 2/16/2016 changed frame.dispose() to System.exit()
+		System.exit(0);
 	}
 
 	/**
