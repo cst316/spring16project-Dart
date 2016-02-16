@@ -151,8 +151,6 @@ public class App {
 		} else{
 			frame.doExit();
 		}
-		
-
 	}
 
 	/**
