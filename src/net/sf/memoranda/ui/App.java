@@ -135,12 +135,23 @@ public class App {
 		trayIcon.setPopupMenu(trayPopupMenu);
 		tray.add(trayIcon);
 		
+		// Sets exit action
 		exitItem.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e) {
 				tray.remove(trayIcon);
 				System.exit(0);
 			}
 		});
+		
+		// Doubleclick action
+		trayIcon.addMouseListener(new MouseAdapter(){
+			public void mouseClicked(MouseEvent e){
+				if (e.getClickCount() == 2){
+					init();
+				}
+			}
+		});
+		
 	}
 
 	void init() {
@@ -190,6 +201,15 @@ public class App {
 		} else{
 			frame.doExit();
 		}
+	}
+	
+	/**
+	 * Closes the main window, but leaves the program open 
+	 */
+	public static void disposeWindow() {
+		if (frame == null)
+			return;
+		frame.dispose();
 	}
 
 	/**
