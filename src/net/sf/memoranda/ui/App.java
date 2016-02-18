@@ -3,6 +3,7 @@ package net.sf.memoranda.ui;
 import java.awt.Dimension;
 import java.awt.Frame;
 import java.awt.Toolkit;
+import java.awt.Point;
 import java.util.Calendar;
 
 import javax.swing.ImageIcon;
@@ -12,9 +13,11 @@ import javax.swing.UIManager;
 
 import net.sf.memoranda.EventsScheduler;
 import net.sf.memoranda.util.Configuration;
+import net.sf.memoranda.util.Local;
+import net.sf.memoranda.util.Context;
 
 /**
- * 
+ *
  * Copyright (c) 2003 Memoranda Team. http://memoranda.sf.net
  */
 
@@ -31,14 +34,14 @@ public class App {
 
 	private JFrame splash = null;
 
-	/*========================================================================*/ 
+	/*========================================================================*/
 	/* Note: Please DO NOT edit the version/build info manually!
-       The actual values are substituted by the Ant build script using 
+       The actual values are substituted by the Ant build script using
        'version' property and datestamp.*/
 
 	public static final String VERSION_INFO = "@VERSION@";
 	public static final String BUILD_INFO = "@BUILD@";
-	
+
 	/*========================================================================*/
 
 	public static AppFrame getFrame() {
@@ -70,13 +73,13 @@ public class App {
 					UIManager.getSystemLookAndFeelClassName());
 			else if (Configuration.get("LOOK_AND_FEEL").equals("default"))
 				UIManager.setLookAndFeel(
-					UIManager.getCrossPlatformLookAndFeelClassName());					
+					UIManager.getCrossPlatformLookAndFeelClassName());
 			else if (
 				Configuration.get("LOOK_AND_FEEL").toString().length() > 0)
 				UIManager.setLookAndFeel(
 					Configuration.get("LOOK_AND_FEEL").toString());
 
-		} catch (Exception e) {		    
+		} catch (Exception e) {
 			new ExceptionDialog(e, "Error when initializing a pluggable look-and-feel. Default LF will be used.", "Make sure that specified look-and-feel library classes are on the CLASSPATH.");
 		}
 		if (Configuration.get("FIRST_DAY_OF_WEEK").equals("")) {
@@ -103,15 +106,15 @@ public class App {
 	void init() {
 		/*
 		 * if (packFrame) { frame.pack(); } else { frame.validate(); }
-		 * 
+		 *
 		 * Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-		 * 
+		 *
 		 * Dimension frameSize = frame.getSize(); if (frameSize.height >
 		 * screenSize.height) { frameSize.height = screenSize.height; } if
 		 * (frameSize.width > screenSize.width) { frameSize.width =
 		 * screenSize.width; }
-		 * 
-		 * 
+		 *
+		 *
 		 * Make the window fullscreen - On Request of users This seems not to
 		 * work on sun's version 1.4.1_01 Works great with 1.4.2 !!! So update
 		 * your J2RE or J2SDK.
@@ -142,8 +145,24 @@ public class App {
 	public static void closeWindow() {
 		if (frame == null)
 			return;
-		// ajcallos 2/16/2016 changed frame.dispose() to System.exit()
+		/* 
+		 * ajcallos 2/16/2016 changed frame.dispose() to System.exit()
+		 * System.exit(0); 
+		*/
+		
+		// crdiaz3 2/17/2016 added pop-up warning on close
+		if (Configuration.get("ASK_ON_EXIT").equals("yes")) {
+			Dimension frmSize = frame.getSize();
+			Point loc = frame.getLocation();
+	
+			ExitConfirmationDialog dlg = new ExitConfirmationDialog(frame,Local.getString("Exit"));
+			dlg.setLocation((frmSize.width - dlg.getSize().width) / 2 + loc.x, (frmSize.height - dlg.getSize().height) / 2 + loc.y);
+			dlg.setVisible(true);
+			if(dlg.CANCELLED) return;
+		}
+		
 		System.exit(0);
+
 	}
 
 	/**
