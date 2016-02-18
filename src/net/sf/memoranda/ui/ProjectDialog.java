@@ -13,10 +13,12 @@ import java.awt.event.ActionListener;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Vector;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
+import javax.swing.JComboBox;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -45,6 +47,25 @@ public class ProjectDialog extends JDialog {
     JPanel topPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
     JLabel header = new JLabel();
     JPanel centerPanel = new JPanel(new GridBagLayout());
+    
+    //Days-of-week hour-entry components:
+    JPanel daysOfWeekPanel = new JPanel(new GridBagLayout());
+    JLabel daysOfWeekLabel = new JLabel();
+    JLabel monLabel = new JLabel();
+    JLabel tuesLabel = new JLabel();
+    JLabel wedLabel = new JLabel();
+    JLabel thursLabel = new JLabel();
+    JLabel friLabel = new JLabel();
+    JLabel satLabel = new JLabel();
+    JLabel sunLabel = new JLabel();
+    JComboBox<Integer> monBox = new JComboBox<Integer>();
+    JComboBox<Integer> tuesBox = new JComboBox<Integer>();
+    JComboBox<Integer> wedBox = new JComboBox<Integer>();
+    JComboBox<Integer> thursBox = new JComboBox<Integer>();
+    JComboBox<Integer> friBox = new JComboBox<Integer>();
+    JComboBox<Integer> sunBox = new JComboBox<Integer>();
+    JComboBox<Integer> satBox = new JComboBox<Integer>();
+   
     JLabel titleLabel = new JLabel();
     public JTextField prTitleField = new JTextField();
     JLabel sdLabel = new JLabel();
@@ -213,6 +234,124 @@ public class ProjectDialog extends JDialog {
         gbc.anchor = GridBagConstraints.WEST;
         centerPanel.add(edButton, gbc);
         
+        //Setup the Days-of-Week hour-entry panel:
+        daysOfWeekLabel.setText("Enter the hours you expect to work each day of the week: ");
+        
+        gbc = new GridBagConstraints();
+        gbc.gridx = 0; gbc.gridy = 0;
+        gbc.gridwidth = 7;
+        gbc.insets = new Insets(5, 5, 5, 5);
+        gbc.anchor = GridBagConstraints.FIRST_LINE_START;
+        daysOfWeekPanel.add(daysOfWeekLabel, gbc);
+       
+        monLabel.setText("Monday");
+        tuesLabel.setText("Tuesday");
+        wedLabel.setText("Wednesday");
+        thursLabel.setText("Thursday");
+        friLabel.setText("Friday");
+        satLabel.setText("Saturday");
+        sunLabel.setText("Sunday");
+        
+        gbc = new GridBagConstraints();
+        gbc.gridx = 0; gbc.gridy = 1;
+        gbc.insets = new Insets(5, 5, 5, 5);
+        gbc.anchor = GridBagConstraints.LINE_START;
+        daysOfWeekPanel.add(monLabel, gbc);
+        
+        gbc = new GridBagConstraints();
+        gbc.gridx = 1; gbc.gridy = 1;
+        gbc.insets = new Insets(5, 5, 5, 5);
+        gbc.anchor = GridBagConstraints.LINE_START;
+        daysOfWeekPanel.add(tuesLabel, gbc);
+        
+        gbc = new GridBagConstraints();
+        gbc.gridx = 2; gbc.gridy = 1;
+        gbc.insets = new Insets(5, 5, 5, 5);
+        gbc.anchor = GridBagConstraints.LINE_START;
+        daysOfWeekPanel.add(wedLabel, gbc);
+        
+        gbc = new GridBagConstraints();
+        gbc.gridx = 3; gbc.gridy = 1;
+        gbc.insets = new Insets(5, 5, 5, 5);
+        gbc.anchor = GridBagConstraints.LINE_START;
+        daysOfWeekPanel.add(thursLabel, gbc);
+        
+        gbc = new GridBagConstraints();
+        gbc.gridx = 4; gbc.gridy = 1;
+        gbc.insets = new Insets(5, 5, 5, 5);
+        gbc.anchor = GridBagConstraints.LINE_START;
+        daysOfWeekPanel.add(friLabel, gbc);
+        
+        gbc = new GridBagConstraints();
+        gbc.gridx = 5; gbc.gridy = 1;
+        gbc.insets = new Insets(5, 5, 5, 5);
+        gbc.anchor = GridBagConstraints.LINE_START;
+        daysOfWeekPanel.add(satLabel, gbc);
+        
+        gbc = new GridBagConstraints();
+        gbc.gridx = 6; gbc.gridy = 1;
+        gbc.insets = new Insets(5, 5, 5, 5);
+        gbc.anchor = GridBagConstraints.LINE_START;
+        daysOfWeekPanel.add(sunLabel, gbc);
+        
+        //Populate the JComboBoxes with numbers 0-24 (representing hrs worked in day)
+        Vector<JComboBox<Integer>> v = new Vector<JComboBox<Integer>>();
+        v.add(monBox);
+        v.add(tuesBox);
+        v.add(wedBox);
+        v.add(thursBox);
+        v.add(friBox);
+        v.add(satBox);
+        v.add(sunBox);
+        for(JComboBox<Integer> jcb : v){
+        	for(int i = 0; i <= 24; i++){
+        		jcb.addItem(i);
+        	}
+        }
+        
+        gbc = new GridBagConstraints();
+        gbc.gridx = 0; gbc.gridy = 2;
+        gbc.insets = new Insets(5, 5, 5, 5);
+        gbc.anchor = GridBagConstraints.LINE_START;
+        daysOfWeekPanel.add(monBox, gbc);
+        
+        gbc = new GridBagConstraints();
+        gbc.gridx = 1; gbc.gridy = 2;
+        gbc.insets = new Insets(5, 5, 5, 5);
+        gbc.anchor = GridBagConstraints.LINE_START;
+        daysOfWeekPanel.add(tuesBox, gbc);
+        
+        gbc = new GridBagConstraints();
+        gbc.gridx = 2; gbc.gridy = 2;
+        gbc.insets = new Insets(5, 5, 5, 5);
+        gbc.anchor = GridBagConstraints.LINE_START;
+        daysOfWeekPanel.add(wedBox, gbc);
+        
+        gbc = new GridBagConstraints();
+        gbc.gridx = 3; gbc.gridy = 2;
+        gbc.insets = new Insets(5, 5, 5, 5);
+        gbc.anchor = GridBagConstraints.LINE_START;
+        daysOfWeekPanel.add(thursBox, gbc);
+        
+        gbc = new GridBagConstraints();
+        gbc.gridx = 4; gbc.gridy = 2;
+        gbc.insets = new Insets(5, 5, 5, 5);
+        gbc.anchor = GridBagConstraints.LINE_START;
+        daysOfWeekPanel.add(friBox, gbc);
+        
+        gbc = new GridBagConstraints();
+        gbc.gridx = 5; gbc.gridy = 2;
+        gbc.insets = new Insets(5, 5, 5, 5);
+        gbc.anchor = GridBagConstraints.LINE_START;
+        daysOfWeekPanel.add(satBox, gbc);
+        
+        gbc = new GridBagConstraints();
+        gbc.gridx = 6; gbc.gridy = 2;
+        gbc.insets = new Insets(5, 5, 5, 5);
+        gbc.anchor = GridBagConstraints.LINE_START;
+        daysOfWeekPanel.add(sunBox, gbc);
+        
+        
         bottomPanel.setLayout(new FlowLayout(FlowLayout.RIGHT));
         okButton.setMaximumSize(new Dimension(100, 25));
         okButton.setMinimumSize(new Dimension(100, 25));
@@ -246,8 +385,14 @@ public class ProjectDialog extends JDialog {
         gbc.insets = new Insets(5, 5, 5, 5);
         getContentPane().add(centerPanel, gbc);
         
+        //Add the Days-of-Week hour-entry panel:
         gbc = new GridBagConstraints();
         gbc.gridx = 0; gbc.gridy = 2;
+        gbc.insets = new Insets(5, 5, 5, 5);
+        getContentPane().add(daysOfWeekPanel, gbc);
+        
+        gbc = new GridBagConstraints();
+        gbc.gridx = 0; gbc.gridy = 3;
         gbc.insets = new Insets(5, 0, 5, 5);
         gbc.anchor = GridBagConstraints.EAST;
         getContentPane().add(bottomPanel, gbc);
