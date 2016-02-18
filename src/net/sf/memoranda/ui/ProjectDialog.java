@@ -244,13 +244,23 @@ public class ProjectDialog extends JDialog {
         gbc.anchor = GridBagConstraints.FIRST_LINE_START;
         daysOfWeekPanel.add(daysOfWeekLabel, gbc);
        
-        monLabel.setText("Monday");
-        tuesLabel.setText("Tuesday");
-        wedLabel.setText("Wednesday");
-        thursLabel.setText("Thursday");
-        friLabel.setText("Friday");
-        satLabel.setText("Saturday");
-        sunLabel.setText("Sunday");
+        monLabel.setText("Mon");
+        tuesLabel.setText("Tue");
+        wedLabel.setText("Wed");
+        thursLabel.setText("Thu");
+        friLabel.setText("Fri");
+        satLabel.setText("Sat");
+        sunLabel.setText("Sun");
+        
+        int weekLabelW = 50;
+        int weekLabelH = 15;
+        monLabel.setPreferredSize(new Dimension(weekLabelW, weekLabelH));
+        tuesLabel.setPreferredSize(new Dimension(weekLabelW, weekLabelH));
+        wedLabel.setPreferredSize(new Dimension(weekLabelW, weekLabelH));
+        thursLabel.setPreferredSize(new Dimension(weekLabelW, weekLabelH));
+        friLabel.setPreferredSize(new Dimension(weekLabelW, weekLabelH));
+        satLabel.setPreferredSize(new Dimension(weekLabelW, weekLabelH));
+        sunLabel.setPreferredSize(new Dimension(weekLabelW, weekLabelH));
         
         gbc = new GridBagConstraints();
         gbc.gridx = 0; gbc.gridy = 1;
