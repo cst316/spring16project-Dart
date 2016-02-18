@@ -3,6 +3,7 @@ package net.sf.memoranda.ui;
 import java.awt.Dimension;
 import java.awt.Frame;
 import java.awt.Toolkit;
+import java.awt.Point;
 import java.util.Calendar;
 
 import javax.swing.ImageIcon;
@@ -12,6 +13,8 @@ import javax.swing.UIManager;
 
 import net.sf.memoranda.EventsScheduler;
 import net.sf.memoranda.util.Configuration;
+import net.sf.memoranda.util.Local;
+import net.sf.memoranda.util.Context;
 
 /**
  *
