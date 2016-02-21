@@ -226,8 +226,6 @@ public class ResourcesPanel extends JPanel {
                         "The provided internet address could not be used.\nPlease be sure to include the http:// or https:// in your address.");
                 return;
             }
-            if (!Util.checkBrowser())
-                return;
             CurrentProject.getResourcesList().addResource(dlg.urlField.getText(), true, false);
             resourcesTable.tableChanged();
         }
