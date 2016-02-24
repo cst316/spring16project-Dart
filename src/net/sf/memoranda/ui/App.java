@@ -145,12 +145,7 @@ public class App {
 	public static void closeWindow() {
 		if (frame == null)
 			return;
-		/* 
-		 * ajcallos 2/16/2016 changed frame.dispose() to System.exit()
-		 * System.exit(0); 
-		*/
-		
-		// crdiaz3 2/17/2016 added pop-up warning on close
+
 		if (Configuration.get("ASK_ON_EXIT").equals("yes")) {
 			Dimension frmSize = frame.getSize();
 			Point loc = frame.getLocation();
