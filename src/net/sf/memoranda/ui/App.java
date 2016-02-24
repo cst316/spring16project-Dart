@@ -161,7 +161,12 @@ public class App {
 			if(dlg.CANCELLED) return;
 		}
 		
-		System.exit(0);
+		if (Configuration.get("ON_CLOSE").equals("minimize")) {
+			frame.dispose();
+		} else{
+			System.exit(0);
+		}
+		
 
 	}
 
