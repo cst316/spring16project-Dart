@@ -85,6 +85,7 @@ public class AppFrame extends JFrame {
     JMenu jMenuEdit = new JMenu();
     JMenu jMenuFormat = new JMenu();
     JMenu jMenuInsert = new JMenu();
+    JMenu jMenuView = new JMenu();
 
     public WorkPanel workPanel = new WorkPanel();
     HTMLEditor editor = workPanel.dailyItemsPanel.editorPanel.editor;
@@ -236,6 +237,9 @@ public class AppFrame extends JFrame {
     JMenuItem jMenuEditPref = new JMenuItem(preferencesAction);
 
     JMenu jMenuInsertSpecial = new JMenu();
+    
+    JMenuItem jMenuViewSavePreset = new JMenuItem();
+    JMenuItem jMenuViewLoadPreset = new JMenuItem();
     
     JMenu jMenuHelp = new JMenu();
     
@@ -472,6 +476,15 @@ public class AppFrame extends JFrame {
         jMenuFile.addSeparator();
         jMenuFile.add(jMenuFileExit);
         
+        jMenuView.setText(Local.getString("View"));
+        jMenuViewSavePreset.setText(Local.getString("Save View"));
+        jMenuViewLoadPreset.setText(Local.getString("Load View"));
+        
+        //TODO: Add View Menu for saving and loading
+        
+        jMenuView.add(jMenuViewSavePreset);
+        jMenuView.add(jMenuViewLoadPreset);
+        
         jMenuHelp.add(jMenuHelpGuide);
         jMenuHelp.add(jMenuOfflineHelpGuide);
         jMenuHelp.add(jMenuHelpWeb);
@@ -484,6 +497,7 @@ public class AppFrame extends JFrame {
         menuBar.add(jMenuInsert);
         menuBar.add(jMenuFormat);
         menuBar.add(jMenuGo);
+        menuBar.add(jMenuView);
         menuBar.add(jMenuHelp);
         this.setJMenuBar(menuBar);
         //contentPane.add(toolBar, BorderLayout.NORTH);
