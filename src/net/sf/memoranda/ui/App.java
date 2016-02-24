@@ -146,20 +146,10 @@ public class App {
 		if (frame == null)
 			return;
 
-		if (Configuration.get("ASK_ON_EXIT").equals("yes")) {
-			Dimension frmSize = frame.getSize();
-			Point loc = frame.getLocation();
-	
-			ExitConfirmationDialog dlg = new ExitConfirmationDialog(frame,Local.getString("Exit"));
-			dlg.setLocation((frmSize.width - dlg.getSize().width) / 2 + loc.x, (frmSize.height - dlg.getSize().height) / 2 + loc.y);
-			dlg.setVisible(true);
-			if(dlg.CANCELLED) return;
-		}
-		
 		if (Configuration.get("ON_CLOSE").equals("minimize")) {
 			frame.dispose();
 		} else{
-			System.exit(0);
+			frame.doExit();
 		}
 		
 
