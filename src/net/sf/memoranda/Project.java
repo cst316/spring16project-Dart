@@ -9,6 +9,7 @@
 package net.sf.memoranda;
 
 import net.sf.memoranda.date.CalendarDate;
+import net.sf.memoranda.workinghrs.WorkingHours;
 
 /**
  * 
@@ -42,6 +43,9 @@ public interface Project {
     String getDescription();
     
     int getStatus();
+    
+    WorkingHours getWorkingHours();
+    void setWorkingHours(WorkingHours hrs);
             
     //int getProgress();
     

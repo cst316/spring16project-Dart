@@ -35,6 +35,7 @@ import net.sf.memoranda.ProjectManager;
 import net.sf.memoranda.date.CalendarDate;
 import net.sf.memoranda.util.CurrentStorage;
 import net.sf.memoranda.util.Local;
+import net.sf.memoranda.workinghrs.WorkingHours;
 
 /*$Id: ProjectDialog.java,v 1.26 2004/10/18 19:09:10 ivanrise Exp $*/
 public class ProjectDialog extends JDialog {
@@ -475,9 +476,17 @@ public class ProjectDialog extends JDialog {
         String title = dlg.prTitleField.getText();
         CalendarDate startD = new CalendarDate((Date) dlg.startDate.getModel().getValue());
         CalendarDate endD = null;
+        int mon = (int) dlg.monBox.getSelectedItem();
+        int tue = (int) dlg.tuesBox.getSelectedItem();
+        int wed = (int) dlg.wedBox.getSelectedItem();
+        int thu = (int) dlg.thursBox.getSelectedItem();
+        int fri = (int) dlg.friBox.getSelectedItem();
+        int sat = (int) dlg.satBox.getSelectedItem();
+        int sun = (int) dlg.sunBox.getSelectedItem();
+        WorkingHours workingHrs = new WorkingHours(mon, tue, wed, thu, fri, sat, sun);
         if (dlg.endDateChB.isSelected())
             endD = new CalendarDate((Date) dlg.endDate.getModel().getValue());
-        Project prj = ProjectManager.createProject(title, startD, endD);
+        Project prj = ProjectManager.createProject(title, startD, endD, workingHrs);
         /*if (dlg.freezeChB.isSelected())
             prj.freeze();*/
         CurrentStorage.get().storeProjectManager();

@@ -26,6 +26,7 @@ import net.sf.memoranda.ProjectManager;
 import net.sf.memoranda.date.CalendarDate;
 import net.sf.memoranda.ui.App;
 import net.sf.memoranda.ui.ExceptionDialog;
+import net.sf.memoranda.workinghrs.WorkingHours;
 /**
  * 
  */
@@ -90,7 +91,7 @@ public class ProjectPackager {
                 }	
                 ProjectManager.removeProject(pId);
             }
-            Project prj = ProjectManager.createProject(pId, pTitle, new CalendarDate(pStartD), null);
+            Project prj = ProjectManager.createProject(pId, pTitle, new CalendarDate(pStartD), null, new WorkingHours());//PLACEHOLDER TODO: Should read in saved WorkingHours!!
             if (pEndD != null)
                 prj.setEndDate(new CalendarDate(pEndD));
             //File prDir = new File(JN_DOCPATH + prj.getID());
