@@ -1,5 +1,7 @@
 package net.sf.memoranda.workinghrs;
 
+import net.sf.memoranda.util.Util;
+
 public class WorkingHours {
 	
 	private int mon;
@@ -10,6 +12,16 @@ public class WorkingHours {
 	private int sat;
 	private int sun;
 	
+	public WorkingHours(){
+		mon = 0;
+		tue = 0;
+		wed = 0;
+		thu = 0;
+		fri = 0;
+		sat = 0;
+		sun = 0;
+	}
+	
 	public WorkingHours(int mon, int tue, int wed, int thu, int fri, int sat, int sun){
 		this.mon = mon;
 		this.tue = tue;
@@ -18,6 +30,37 @@ public class WorkingHours {
 		this.fri = fri;
 		this.sat = sat;
 		this.sun = sun;
+	}
+	
+	public WorkingHours(String hrs){
+		 int[] h = Util.parseWorkingHrsStamp(hrs);
+		 mon = h[0];
+		 tue = h[1];
+		 wed = h[2];
+		 thu = h[3];
+		 fri = h[4];
+		 sat = h[5];
+		 sun = h[6];
+	}
+	
+	public String toString(){
+		StringBuffer s = new StringBuffer();
+		String delimiter = "-";
+		s.append(Integer.toString(mon));
+		s.append(delimiter);
+		s.append(Integer.toString(tue));
+		s.append(delimiter);
+		s.append(Integer.toString(wed));
+		s.append(delimiter);
+		s.append(Integer.toString(thu));
+		s.append(delimiter);
+		s.append(Integer.toString(fri));
+		s.append(delimiter);
+		s.append(Integer.toString(sat));
+		s.append(delimiter);
+		s.append(Integer.toString(sun));
+		s.append(delimiter);
+		return s.toString();
 	}
 	
 	//Getters
