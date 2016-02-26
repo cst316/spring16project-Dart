@@ -192,18 +192,18 @@ public class AgendaPanel extends JPanel {
 					}else if (d.startsWith("memoranda:exportstickerst")) {
 						 /*  Falta agregar el exportar sticker mientras tanto..*/
 						 final JFrame parent = new JFrame();
-						 String name = JOptionPane.showInputDialog(parent,Local.getString("Ingrese nombre de archivo a exportar"),null);
+						 String name = JOptionPane.showInputDialog(parent,Local.getString("Enter a file name"),null);
 						 new ExportSticker(name).export("txt");
 						 //JOptionPane.showMessageDialog(null,name);
 					}else if (d.startsWith("memoranda:exportstickersh")) {
 						 /*  Falta agregar el exportar sticker mientras tanto..*/
 						 final JFrame parent = new JFrame();
-						 String name = JOptionPane.showInputDialog(parent,Local.getString("Ingrese nombre de archivo a exportar"),null);
+						 String name = JOptionPane.showInputDialog(parent,Local.getString("Enter filename to export to"),null);
 						 new ExportSticker(name).export("html");
 						 //JOptionPane.showMessageDialog(null,name);
 					}else if (d.startsWith("memoranda:importstickers")) {
 						final JFrame parent = new JFrame();
-						String name = JOptionPane.showInputDialog(parent,Local.getString("Ingrese nombre de archivo a importar"),null);
+						String name = JOptionPane.showInputDialog(parent,Local.getString("Enter filename to import to"),null);
 						new ImportSticker(name).import_file();
 					}
 				}
@@ -283,12 +283,12 @@ public class AgendaPanel extends JPanel {
 		//			public void actionPerformed(ActionEvent e) {
 		//				toggleShowActiveOnly_actionPerformed(e);
 		//			}
-		//		});		
+		//		});
 		//		boolean isShao =
 		//			(Context.get("SHOW_ACTIVE_TASKS_ONLY") != null)
 		//				&& (Context.get("SHOW_ACTIVE_TASKS_ONLY").equals("true"));
 		//		ppShowActiveOnlyChB.setSelected(isShao);
-		//		toggleShowActiveOnly_actionPerformed(null);		
+		//		toggleShowActiveOnly_actionPerformed(null);
 	}
 
 	public void refresh(CalendarDate date) {
@@ -317,13 +317,13 @@ public class AgendaPanel extends JPanel {
 	//		/*if (taskTable.isShowActiveOnly()) {
 	//			// is true, toggle to false
 	//			taskTable.setShowActiveOnly(false);
-	//			//showActiveOnly.setToolTipText(Local.getString("Show Active Only"));			
+	//			//showActiveOnly.setToolTipText(Local.getString("Show Active Only"));
 	//		}
 	//		else {
 	//			// is false, toggle to true
 	//			taskTable.setShowActiveOnly(true);
-	//			showActiveOnly.setToolTipText(Local.getString("Show All"));			
-	//		}*/	    
+	//			showActiveOnly.setToolTipText(Local.getString("Show All"));
+	//		}*/
 	//		refresh(CurrentDate.get());
 	////		parentPanel.updateIndicators();
 	//		//taskTable.updateUI();
