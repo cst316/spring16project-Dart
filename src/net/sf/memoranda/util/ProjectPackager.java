@@ -55,7 +55,7 @@ public class ProjectPackager {
             
             PackDirectory(prDir.getPath(), prDir, zip);
             zip.putNextEntry(new ZipEntry("__PROJECT_INFO__"));
-            String prInfo = prj.getID() + "\n" + prj.getTitle() + "\n" + prj.getStartDate().toString() + "\n";
+            String prInfo = prj.getID() + "\n" + prj.getTitle() + "\n" + prj.getStartDate().toString() + "\n" + prj.getWorkingHours().toString() + "\n";
             if (prj.getEndDate() != null)
                 prInfo += prj.getEndDate().toString();
             zip.write(prInfo.getBytes("UTF-8"));
@@ -76,6 +76,7 @@ public class ProjectPackager {
             String pId = in.readLine();
             String pTitle = in.readLine();
             String pStartD = in.readLine();
+            String pWorkingHrs = in.readLine();
             String pEndD = in.readLine();
             in.close();
             if (ProjectManager.getProject(pId) != null) {
@@ -91,7 +92,7 @@ public class ProjectPackager {
                 }	
                 ProjectManager.removeProject(pId);
             }
-            Project prj = ProjectManager.createProject(pId, pTitle, new CalendarDate(pStartD), null, new WorkingHours());//PLACEHOLDER TODO: Should read in saved WorkingHours!!
+            Project prj = ProjectManager.createProject(pId, pTitle, new CalendarDate(pStartD), null, new WorkingHours(pWorkingHrs));
             if (pEndD != null)
                 prj.setEndDate(new CalendarDate(pEndD));
             //File prDir = new File(JN_DOCPATH + prj.getID());
