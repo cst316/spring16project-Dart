@@ -45,7 +45,8 @@ public class WorkingHours {
 	
 	public String toString(){
 		StringBuffer s = new StringBuffer();
-		String delimiter = "-";
+		String delimiter = " ";
+		s.append(delimiter);
 		s.append(Integer.toString(mon));
 		s.append(delimiter);
 		s.append(Integer.toString(tue));
