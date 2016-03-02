@@ -138,6 +138,12 @@ public class AppFrame extends JFrame {
                         p1Import_actionPerformed(e);
                 }
         };
+        
+    public Action showLayoutViewEditorAction = new AbstractAction("Edit custom Layouts") {
+    	public void actionPerformed(ActionEvent e) {
+    		showLayoutViewEditor();
+    	}
+    };
     
     JMenuItem jMenuFileNewPrj = new JMenuItem();
         JMenuItem jMenuFileNewNote = new JMenuItem(workPanel.dailyItemsPanel.editorPanel.newAction);
@@ -238,8 +244,7 @@ public class AppFrame extends JFrame {
 
     JMenu jMenuInsertSpecial = new JMenu();
     
-    JMenuItem jMenuViewSavePreset = new JMenuItem();
-    JMenuItem jMenuViewLoadPreset = new JMenuItem();
+    JMenuItem jMenuEditLayoutView = new JMenuItem(showLayoutViewEditorAction);
     
     JMenu jMenuHelp = new JMenu();
     
@@ -477,13 +482,11 @@ public class AppFrame extends JFrame {
         jMenuFile.add(jMenuFileExit);
         
         jMenuView.setText(Local.getString("View"));
-        jMenuViewSavePreset.setText(Local.getString("Save View"));
-        jMenuViewLoadPreset.setText(Local.getString("Load View"));
+        jMenuEditLayoutView.setText(Local.getString("Edit Custom Layout Views"));
         
         //TODO: Add View Menu for saving and loading
         
-        jMenuView.add(jMenuViewSavePreset);
-        jMenuView.add(jMenuViewLoadPreset);
+        jMenuView.add(jMenuEditLayoutView);
         
         jMenuHelp.add(jMenuHelpGuide);
         jMenuHelp.add(jMenuOfflineHelpGuide);
@@ -859,6 +862,16 @@ public class AppFrame extends JFrame {
         dlg.pack();
         dlg.setLocationRelativeTo(this);
         dlg.setVisible(true);
+    }
+    
+    /**
+     * Displays the layout view editor window.
+     */
+    protected void showLayoutViewEditor() {
+    	LayoutViewEditor myLayoutViewEditor = new LayoutViewEditor(this);
+    	myLayoutViewEditor.pack();
+    	myLayoutViewEditor.setLocationRelativeTo(this);
+    	myLayoutViewEditor.setVisible(true);
     }
     
             protected void ppExport_actionPerformed(ActionEvent e) {
