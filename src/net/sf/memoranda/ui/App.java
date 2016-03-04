@@ -199,15 +199,6 @@ public class App {
 			frame.doExit();
 		}
 	}
-	
-	/**
-	 * Closes the main window, but leaves the program open 
-	 */
-	public static void disposeWindow() {
-		if (frame == null)
-			return;
-		frame.dispose();
-	}
 
 	/**
 	 * Method showSplash.
