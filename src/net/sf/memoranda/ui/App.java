@@ -14,7 +14,7 @@ import net.sf.memoranda.EventsScheduler;
 import net.sf.memoranda.util.Configuration;
 
 /**
- * 
+ *
  * Copyright (c) 2003 Memoranda Team. http://memoranda.sf.net
  */
 
@@ -31,14 +31,14 @@ public class App {
 
 	private JFrame splash = null;
 
-	/*========================================================================*/ 
+	/*========================================================================*/
 	/* Note: Please DO NOT edit the version/build info manually!
-       The actual values are substituted by the Ant build script using 
+       The actual values are substituted by the Ant build script using
        'version' property and datestamp.*/
 
 	public static final String VERSION_INFO = "@VERSION@";
 	public static final String BUILD_INFO = "@BUILD@";
-	
+
 	/*========================================================================*/
 
 	public static AppFrame getFrame() {
@@ -70,13 +70,13 @@ public class App {
 					UIManager.getSystemLookAndFeelClassName());
 			else if (Configuration.get("LOOK_AND_FEEL").equals("default"))
 				UIManager.setLookAndFeel(
-					UIManager.getCrossPlatformLookAndFeelClassName());					
+					UIManager.getCrossPlatformLookAndFeelClassName());
 			else if (
 				Configuration.get("LOOK_AND_FEEL").toString().length() > 0)
 				UIManager.setLookAndFeel(
 					Configuration.get("LOOK_AND_FEEL").toString());
 
-		} catch (Exception e) {		    
+		} catch (Exception e) {
 			new ExceptionDialog(e, "Error when initializing a pluggable look-and-feel. Default LF will be used.", "Make sure that specified look-and-feel library classes are on the CLASSPATH.");
 		}
 		if (Configuration.get("FIRST_DAY_OF_WEEK").equals("")) {
@@ -103,15 +103,15 @@ public class App {
 	void init() {
 		/*
 		 * if (packFrame) { frame.pack(); } else { frame.validate(); }
-		 * 
+		 *
 		 * Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-		 * 
+		 *
 		 * Dimension frameSize = frame.getSize(); if (frameSize.height >
 		 * screenSize.height) { frameSize.height = screenSize.height; } if
 		 * (frameSize.width > screenSize.width) { frameSize.width =
 		 * screenSize.width; }
-		 * 
-		 * 
+		 *
+		 *
 		 * Make the window fullscreen - On Request of users This seems not to
 		 * work on sun's version 1.4.1_01 Works great with 1.4.2 !!! So update
 		 * your J2RE or J2SDK.
@@ -142,7 +142,12 @@ public class App {
 	public static void closeWindow() {
 		if (frame == null)
 			return;
-		frame.dispose();
+
+		if (Configuration.get("ON_CLOSE").equals("minimize")) {
+			frame.dispose();
+		} else{
+			frame.doExit();
+		}
 	}
 
 	/**
