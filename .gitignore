@@ -9,3 +9,6 @@ README.txt
 build.number
 /classes/
 lib/jacoco.exec
+*.swo
+*.swp
+*~
