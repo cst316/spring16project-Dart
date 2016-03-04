@@ -13,7 +13,6 @@ import javax.swing.UIManager;
 import net.sf.memoranda.EventsScheduler;
 import net.sf.memoranda.util.Configuration;
 
-// ajcallos 2/16/2016
 import java.awt.SystemTray;
 import java.awt.TrayIcon;
 import javax.swing.ImageIcon;
@@ -106,7 +105,6 @@ public class App {
 		if (!Configuration.get("SHOW_SPLASH").equals("no"))
 			splash.dispose();
 		
-		// ajcallos 2/16/2016
 		if (SystemTray.isSupported()){
 			try {
 				initTray();

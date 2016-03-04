@@ -107,7 +107,7 @@ public class AppFrame extends JFrame {
 
     public Action minimizeAction = new AbstractAction("Close the window") {
         public void actionPerformed(ActionEvent e) {
-        	// ajcallos 2/16/2016
+
             if (SystemTray.isSupported()){
             	App.disposeWindow();
             } else {
@@ -704,7 +704,7 @@ public class AppFrame extends JFrame {
 
     protected void processWindowEvent(WindowEvent e) {
         if (e.getID() == WindowEvent.WINDOW_CLOSING) {
-        	// ajcallos 2/16/2016
+
             if (Configuration.get("ON_CLOSE").equals("exit") || !SystemTray.isSupported())
                 doExit();
             else
