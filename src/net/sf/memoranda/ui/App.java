@@ -9,6 +9,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.UIManager;
+import javax.swing.JSeparater;
 
 import net.sf.memoranda.EventsScheduler;
 import net.sf.memoranda.util.Configuration;
@@ -23,7 +24,7 @@ import java.awt.AWTException;
 import java.awt.event.*;
 
 /**
- * 
+ *
  * Copyright (c) 2003 Memoranda Team. http://memoranda.sf.net
  */
 
@@ -40,14 +41,14 @@ public class App {
 
 	private JFrame splash = null;
 
-	/*========================================================================*/ 
+	/*========================================================================*/
 	/* Note: Please DO NOT edit the version/build info manually!
-       The actual values are substituted by the Ant build script using 
+       The actual values are substituted by the Ant build script using
        'version' property and datestamp.*/
 
 	public static final String VERSION_INFO = "1.0-rc3.1";
 	public static final String BUILD_INFO = "20160216.63";
-	
+
 	/*========================================================================*/
 
 	public static AppFrame getFrame() {
@@ -79,13 +80,13 @@ public class App {
 					UIManager.getSystemLookAndFeelClassName());
 			else if (Configuration.get("LOOK_AND_FEEL").equals("default"))
 				UIManager.setLookAndFeel(
-					UIManager.getCrossPlatformLookAndFeelClassName());					
+					UIManager.getCrossPlatformLookAndFeelClassName());
 			else if (
 				Configuration.get("LOOK_AND_FEEL").toString().length() > 0)
 				UIManager.setLookAndFeel(
 					Configuration.get("LOOK_AND_FEEL").toString());
 
-		} catch (Exception e) {		    
+		} catch (Exception e) {
 			new ExceptionDialog(e, "Error when initializing a pluggable look-and-feel. Default LF will be used.", "Make sure that specified look-and-feel library classes are on the CLASSPATH.");
 		}
 		if (Configuration.get("FIRST_DAY_OF_WEEK").equals("")) {
@@ -107,7 +108,7 @@ public class App {
 		}
 		if (!Configuration.get("SHOW_SPLASH").equals("no"))
 			splash.dispose();
-		
+
 		// ajcallos 2/16/2016
 		if (SystemTray.isSupported()){
 			try {
@@ -115,28 +116,30 @@ public class App {
 			} catch (AWTException ex){
 				//TODO:
 			}
-		} 
+		}
 	}
-	
-	/** 
+
+	/**
 	 * Initializes the Memoranda icon in the system tray
 	 * Uses the oracle example at https://docs.oracle.com/javase/tutorial/uiswing/misc/systemtray.html as the baseline
-	 * @author ajcallos 
-	 * added 2/16/2016 
+	 * @author ajcallos
+	 * added 2/16/2016
 	 */
 	private void initTray() throws AWTException	{
 		final String iconPath = "resources/memorandaTrayIcon.gif";
 		final PopupMenu trayPopupMenu = new PopupMenu();
 		final TrayIcon trayIcon = new TrayIcon(new ImageIcon(App.class.getResource(iconPath)).getImage());
 		final SystemTray tray = SystemTray.getSystemTray();
-		
+
 		MenuItem exitItem = new MenuItem("Exit");
-		
+		MenuItem openItem = new MenuItem("Restore");
+
 		trayPopupMenu.add(exitItem);
-		
+		trayPopupMenu.add(restoreItem);
+
 		trayIcon.setPopupMenu(trayPopupMenu);
 		tray.add(trayIcon);
-		
+
 		// Sets exit action
 		exitItem.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e) {
@@ -144,7 +147,14 @@ public class App {
 				System.exit(0);
 			}
 		});
-		
+
+		// Restores Window on menu item click
+		restoreItem.addActionListener(new ActionListener(){
+			public void actionPerformed(ActionEvent e) {
+				init();
+			}
+		});
+
 		// Doubleclick action
 		trayIcon.addMouseListener(new MouseAdapter(){
 			public void mouseClicked(MouseEvent e){
@@ -153,21 +163,21 @@ public class App {
 				}
 			}
 		});
-		
+
 	}
 
 	void init() {
 		/*
 		 * if (packFrame) { frame.pack(); } else { frame.validate(); }
-		 * 
+		 *
 		 * Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-		 * 
+		 *
 		 * Dimension frameSize = frame.getSize(); if (frameSize.height >
 		 * screenSize.height) { frameSize.height = screenSize.height; } if
 		 * (frameSize.width > screenSize.width) { frameSize.width =
 		 * screenSize.width; }
-		 * 
-		 * 
+		 *
+		 *
 		 * Make the window fullscreen - On Request of users This seems not to
 		 * work on sun's version 1.4.1_01 Works great with 1.4.2 !!! So update
 		 * your J2RE or J2SDK.
@@ -195,13 +205,13 @@ public class App {
 	}
 
 	public static void closeWindow() {
-		
+
 		// ajcallos 2/16/2016 changed frame.dispose() to System.exit()
 		System.exit(0);
 	}
-	
+
 	/**
-	 * Closes the main window, but leaves the program open 
+	 * Closes the main window, but leaves the program open
 	 */
 	public static void disposeWindow() {
 		if (frame == null)
