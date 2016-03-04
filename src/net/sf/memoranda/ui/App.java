@@ -9,12 +9,10 @@ import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.UIManager;
-import javax.swing.JSeparater;
 
 import net.sf.memoranda.EventsScheduler;
 import net.sf.memoranda.util.Configuration;
 
-// ajcallos 2/16/2016
 import java.awt.SystemTray;
 import java.awt.TrayIcon;
 import javax.swing.ImageIcon;
@@ -132,7 +130,7 @@ public class App {
 		final SystemTray tray = SystemTray.getSystemTray();
 
 		MenuItem exitItem = new MenuItem("Exit");
-		MenuItem openItem = new MenuItem("Restore");
+		MenuItem restoreItem = new MenuItem("Restore");
 
 		trayPopupMenu.add(exitItem);
 		trayPopupMenu.add(restoreItem);
