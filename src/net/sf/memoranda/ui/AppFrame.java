@@ -703,6 +703,10 @@ public class AppFrame extends JFrame {
 
     protected void processWindowEvent(WindowEvent e) {
         if (e.getID() == WindowEvent.WINDOW_CLOSING) {
+<<<<<<< 8a8d9782f9ad5793edb251a0bf36f9f1f9956a06
+=======
+
+>>>>>>> Removed unecessary comment lines
             if (Configuration.get("ON_CLOSE").equals("exit") || !SystemTray.isSupported())
                 doExit();
             else
