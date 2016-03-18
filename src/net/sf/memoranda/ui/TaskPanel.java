@@ -314,8 +314,7 @@ public class TaskPanel extends JPanel {
 		});
         ppCalcTask.setIcon(new ImageIcon(net.sf.memoranda.ui.AppFrame.class
                     .getResource("resources/icons/todo_complete.png")));
-        // ppCalcTask.setEnabled(false);
-        ppCalcTask.setEnabled(true);
+        ppCalcTask.setEnabled(false);
 
         scrollPane.getViewport().add(taskTable, null);
         this.add(scrollPane, BorderLayout.CENTER);
@@ -343,23 +342,31 @@ public class TaskPanel extends JPanel {
 
         CurrentDate.addDateListener(new DateListener() {
             public void dateChange(CalendarDate d) {
-                newTaskB.setEnabled(d.inPeriod(CurrentProject.get().getStartDate(), CurrentProject.get().getEndDate()));
+                newTaskB.setEnabled(d.inPeriod(
+                            CurrentProject.get().getStartDate(),
+                            CurrentProject.get().getEndDate()));
             }
         });
         CurrentProject.addProjectListener(new ProjectListener() {
-            public void projectChange(Project p, NoteList nl, TaskList tl, ResourcesList rl) {
+            public void projectChange(Project p, NoteList nl, TaskList tl,
+                    ResourcesList rl) {
                 newTaskB.setEnabled(
-                    CurrentDate.get().inPeriod(p.getStartDate(), p.getEndDate()));
+                    CurrentDate.get().inPeriod(p.getStartDate(),
+                        p.getEndDate()));
             }
             public void projectWasChanged() {
             	//taskTable.setCurrentRootTask(null); //XXX
             }
         });
-        taskTable.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
+        taskTable.getSelectionModel().addListSelectionListener(
+                new ListSelectionListener() {
             public void valueChanged(ListSelectionEvent e) {
-                boolean enbl = (taskTable.getRowCount() > 0)&&(taskTable.getSelectedRow() > -1);
-                editTaskB.setEnabled(enbl);ppEditTask.setEnabled(enbl);
-                removeTaskB.setEnabled(enbl);ppRemoveTask.setEnabled(enbl);
+                boolean enbl = (taskTable.getRowCount() > 0)
+                    && (taskTable.getSelectedRow() > -1);
+                editTaskB.setEnabled(enbl);
+                ppEditTask.setEnabled(enbl);
+                removeTaskB.setEnabled(enbl);
+                ppRemoveTask.setEnabled(enbl);
 				
 				ppCompleteTask.setEnabled(enbl);
 				completeTaskB.setEnabled(enbl);
@@ -375,9 +382,12 @@ public class TaskPanel extends JPanel {
 				}XXX*/
 				
                 if (enbl) {   
-    				String thisTaskId = taskTable.getModel().getValueAt(taskTable.getSelectedRow(), TaskTable.TASK_ID).toString();
+    				String thisTaskId = taskTable.getModel().getValueAt(
+                            taskTable.getSelectedRow(),
+                            TaskTable.TASK_ID).toString();
     				
-    				boolean hasSubTasks = CurrentProject.getTaskList().hasSubTasks(thisTaskId);
+    				boolean hasSubTasks = 
+                        CurrentProject.getTaskList().hasSubTasks(thisTaskId);
     				//ppSubTasks.setEnabled(hasSubTasks);
     				ppCalcTask.setEnabled(hasSubTasks);
     				Task t = CurrentProject.getTaskList().getTask(thisTaskId);
@@ -396,26 +406,26 @@ public class TaskPanel extends JPanel {
 		ppAddSubTask.setEnabled(false);
 		//ppSubTasks.setEnabled(false);
 		//ppParentTask.setEnabled(false);
-    taskPPMenu.add(ppEditTask);
-    
-    taskPPMenu.addSeparator();
-    taskPPMenu.add(ppNewTask);
-    taskPPMenu.add(ppAddSubTask);
-    taskPPMenu.add(ppRemoveTask);
-    
-    taskPPMenu.addSeparator();
-	taskPPMenu.add(ppCompleteTask);
-	taskPPMenu.add(ppCalcTask);
-	
-    //taskPPMenu.addSeparator();
-    
-    //taskPPMenu.add(ppSubTasks);
-    
-    //taskPPMenu.addSeparator();
-    //taskPPMenu.add(ppParentTask);
-    
-    taskPPMenu.addSeparator();
-	taskPPMenu.add(ppShowActiveOnlyChB);
+        taskPPMenu.add(ppEditTask);
+        
+        taskPPMenu.addSeparator();
+        taskPPMenu.add(ppNewTask);
+        taskPPMenu.add(ppAddSubTask);
+        taskPPMenu.add(ppRemoveTask);
+        
+        taskPPMenu.addSeparator();
+        taskPPMenu.add(ppCompleteTask);
+        taskPPMenu.add(ppCalcTask);
+        
+        //taskPPMenu.addSeparator();
+        
+        //taskPPMenu.add(ppSubTasks);
+        
+        //taskPPMenu.addSeparator();
+        //taskPPMenu.add(ppParentTask);
+        
+        taskPPMenu.addSeparator();
+        taskPPMenu.add(ppShowActiveOnlyChB);
 
 	
 		// define key actions in TaskPanel:
