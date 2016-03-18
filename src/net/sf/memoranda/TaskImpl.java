@@ -351,13 +351,13 @@ public class TaskImpl implements Task, Comparable {
 	/* 
 	 * @see net.sf.memoranda.Task#getSubTasks()
 	 */
-	public Collection getSubTasks() {
+	public Collection<Task> getSubTasks() {
 		Elements subTasks = _element.getChildElements("task");
             return convertToTaskObjects(subTasks);
 	}
 
-	private Collection convertToTaskObjects(Elements tasks) {
-        Vector v = new Vector();
+	private Collection<Task> convertToTaskObjects(Elements tasks) {
+        Vector<Task> v = new Vector<Task>();
         for (int i = 0; i < tasks.size(); i++) {
             Task t = new TaskImpl(tasks.get(i), _tl);
             v.add(t);
