@@ -234,41 +234,45 @@ public class TaskPanel extends JPanel {
         /*taskTable.setMaximumSize(new Dimension(32767, 32767));
         taskTable.setRowHeight(24);*/
         ppEditTask.setFont(new java.awt.Font("Dialog", 1, 11));
-    ppEditTask.setText(Local.getString("Edit task")+"...");
-    ppEditTask.addActionListener(new java.awt.event.ActionListener() {
+        ppEditTask.setText(Local.getString("Edit task")+"...");
+        ppEditTask.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 ppEditTask_actionPerformed(e);
             }
         });
-    ppEditTask.setEnabled(false);
-    ppEditTask.setIcon(new ImageIcon(net.sf.memoranda.ui.AppFrame.class.getResource("resources/icons/todo_edit.png")));
-    taskPPMenu.setFont(new java.awt.Font("Dialog", 1, 10));
-    ppRemoveTask.setFont(new java.awt.Font("Dialog", 1, 11));
-    ppRemoveTask.setText(Local.getString("Remove task"));
-    ppRemoveTask.addActionListener(new java.awt.event.ActionListener() {
+        ppEditTask.setEnabled(false);
+        ppEditTask.setIcon(new ImageIcon(net.sf.memoranda.ui.AppFrame.class
+                    .getResource("resources/icons/todo_edit.png")));
+        taskPPMenu.setFont(new java.awt.Font("Dialog", 1, 10));
+        ppRemoveTask.setFont(new java.awt.Font("Dialog", 1, 11));
+        ppRemoveTask.setText(Local.getString("Remove task"));
+        ppRemoveTask.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 ppRemoveTask_actionPerformed(e);
             }
         });
-    ppRemoveTask.setIcon(new ImageIcon(net.sf.memoranda.ui.AppFrame.class.getResource("resources/icons/todo_remove.png")));
-    ppRemoveTask.setEnabled(false);
-    ppNewTask.setFont(new java.awt.Font("Dialog", 1, 11));
-    ppNewTask.setText(Local.getString("New task")+"...");
-    ppNewTask.addActionListener(new java.awt.event.ActionListener() {
+        ppRemoveTask.setIcon(new ImageIcon(net.sf.memoranda.ui.AppFrame.class
+                    .getResource("resources/icons/todo_remove.png")));
+        ppRemoveTask.setEnabled(false);
+        ppNewTask.setFont(new java.awt.Font("Dialog", 1, 11));
+        ppNewTask.setText(Local.getString("New task")+"...");
+        ppNewTask.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 ppNewTask_actionPerformed(e);
             }
         });
-    ppNewTask.setIcon(new ImageIcon(net.sf.memoranda.ui.AppFrame.class.getResource("resources/icons/todo_new.png")));
+        ppNewTask.setIcon(new ImageIcon(net.sf.memoranda.ui.AppFrame.class
+                    .getResource("resources/icons/todo_new.png")));
 
-    ppAddSubTask.setFont(new java.awt.Font("Dialog", 1, 11));
-    ppAddSubTask.setText(Local.getString("Add subtask"));
-    ppAddSubTask.addActionListener(new java.awt.event.ActionListener() {
+        ppAddSubTask.setFont(new java.awt.Font("Dialog", 1, 11));
+        ppAddSubTask.setText(Local.getString("Add subtask"));
+        ppAddSubTask.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 ppAddSubTask_actionPerformed(e);
             }
         });
-    ppAddSubTask.setIcon(new ImageIcon(net.sf.memoranda.ui.AppFrame.class.getResource("resources/icons/todo_new_sub.png")));
+        ppAddSubTask.setIcon(new ImageIcon(net.sf.memoranda.ui.AppFrame.class
+                    .getResource("resources/icons/todo_new_sub.png")));
 
     /*
     ppSubTasks.setFont(new java.awt.Font("Dialog", 1, 11));
@@ -290,27 +294,30 @@ public class TaskPanel extends JPanel {
     ppParentTask.setIcon(new ImageIcon(net.sf.memoranda.ui.AppFrame.class.getResource("resources/icons/todo_new.png")));
     */
 
-	ppCompleteTask.setFont(new java.awt.Font("Dialog", 1, 11));
-	ppCompleteTask.setText(Local.getString("Complete task"));
-	ppCompleteTask.addActionListener(new java.awt.event.ActionListener() {
+        ppCompleteTask.setFont(new java.awt.Font("Dialog", 1, 11));
+        ppCompleteTask.setText(Local.getString("Complete task"));
+        ppCompleteTask.addActionListener(new java.awt.event.ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				ppCompleteTask_actionPerformed(e);
 			}
 		});
-	ppCompleteTask.setIcon(new ImageIcon(net.sf.memoranda.ui.AppFrame.class.getResource("resources/icons/todo_complete.png")));
-	ppCompleteTask.setEnabled(false);
+        ppCompleteTask.setIcon(new ImageIcon(net.sf.memoranda.ui.AppFrame.class
+                    .getResource("resources/icons/todo_complete.png")));
+        ppCompleteTask.setEnabled(false);
 
-	ppCalcTask.setFont(new java.awt.Font("Dialog", 1, 11));
-	ppCalcTask.setText(Local.getString("Calculate task data"));
-	ppCalcTask.addActionListener(new java.awt.event.ActionListener() {
+        ppCalcTask.setFont(new java.awt.Font("Dialog", 1, 11));
+        ppCalcTask.setText(Local.getString("Calculate task data"));
+        ppCalcTask.addActionListener(new java.awt.event.ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				ppCalcTask_actionPerformed(e);
 			}
 		});
-	ppCalcTask.setIcon(new ImageIcon(net.sf.memoranda.ui.AppFrame.class.getResource("resources/icons/todo_complete.png")));
-	ppCalcTask.setEnabled(false);
+        ppCalcTask.setIcon(new ImageIcon(net.sf.memoranda.ui.AppFrame.class
+                    .getResource("resources/icons/todo_complete.png")));
+        // ppCalcTask.setEnabled(false);
+        ppCalcTask.setEnabled(true);
 
-    scrollPane.getViewport().add(taskTable, null);
+        scrollPane.getViewport().add(taskTable, null);
         this.add(scrollPane, BorderLayout.CENTER);
         tasksToolBar.add(historyBackB, null);
         tasksToolBar.add(historyForwardB, null);
