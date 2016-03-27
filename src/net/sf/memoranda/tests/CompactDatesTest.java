@@ -33,11 +33,17 @@ public class CompactDatesTest {
 		tl = new TaskListImpl(prj);
 	}
 
+	/**
+	 * This method tests the situation where the supertask has one or more subtasks
+	 * whose start date is earlier than the supertask's start date and whose end date
+	 * is later than the supertask's end date.  Thus, the supertask should "grow" its
+	 * date range in both directions, hence why this method is named testGrowBoth.
+	 */
 	@Test
-	public void test() {
+	public void testGrowBoth() {
 		//Supertask start and end dates:
 		Calendar superStartD = Calendar.getInstance();
-		superStartD.add(Calendar.DAY_OF_MONTH, 4);//TEMP TODO PLEASE DELETE THIS
+		superStartD.add(Calendar.DAY_OF_MONTH, 4);
 		Calendar superEndD = Calendar.getInstance();
 		superEndD.add(Calendar.DAY_OF_MONTH, 6);
 		CalendarDate super_start = new CalendarDate(superStartD);
