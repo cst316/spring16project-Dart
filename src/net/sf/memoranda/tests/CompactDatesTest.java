@@ -249,7 +249,7 @@ public class CompactDatesTest {
 		
 		//Subtask 1 start and end dates (subtask 1 has the smallest range):
 		Calendar sub1StartD = Calendar.getInstance();
-		sub1StartD.add(Calendar.DAY_OF_MONTH, 5);
+		sub1StartD.add(Calendar.DAY_OF_MONTH, 3);
 		Calendar sub1EndD = Calendar.getInstance();
 		sub1EndD.add(Calendar.DAY_OF_MONTH, 10);
 		CalendarDate sub1_start = new CalendarDate(sub1StartD);
@@ -265,7 +265,7 @@ public class CompactDatesTest {
 				
 		//Subtask 3 start and end dates:
 		Calendar sub3StartD = Calendar.getInstance();
-		sub3StartD.add(Calendar.DAY_OF_MONTH, 3);
+		sub3StartD.add(Calendar.DAY_OF_MONTH, 5);
 		Calendar sub3EndD = Calendar.getInstance();
 		sub3EndD.add(Calendar.DAY_OF_MONTH, 9);
 		CalendarDate sub3_start = new CalendarDate(sub3StartD);

@@ -223,11 +223,13 @@ public class TaskListImpl implements TaskList {
      * @return
      */
     public CalendarDate getEarliestStartDateFromSubTasks(Task t) {
-        CalendarDate d = t.getStartDate();
         if (hasSubTasks(t.getID())) {
 	        Collection subTasks = getAllSubTasks(t.getID());
-	        for (Iterator iter = subTasks.iterator(); iter.hasNext();) {
-	        	Task e = (Task) iter.next();
+	        Iterator iter = subTasks.iterator();
+	        Task e = (Task) iter.next();
+	        CalendarDate d = e.getStartDate();
+	        while ( iter.hasNext() ) {
+	        	e = (Task) iter.next();
 	        	CalendarDate dd = getEarliestStartDateFromSubTasks(e);
 	        	if(dd.before(d)) {
 	        	    d = dd;
@@ -242,7 +244,7 @@ public class TaskListImpl implements TaskList {
     }
 
     /**
-     * Looks through the entire sub task tree and corrects any inconsistencies in start dates
+     * Looks through the entire sub task tree and corrects any inconsistencies in end dates
      * 
      * @param t
      * @return
