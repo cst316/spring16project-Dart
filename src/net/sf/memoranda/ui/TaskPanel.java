@@ -35,6 +35,7 @@ import net.sf.memoranda.TaskList;
 import net.sf.memoranda.date.CalendarDate;
 import net.sf.memoranda.date.CurrentDate;
 import net.sf.memoranda.date.DateListener;
+import net.sf.memoranda.util.Configuration;
 import net.sf.memoranda.util.Context;
 import net.sf.memoranda.util.CurrentStorage;
 import net.sf.memoranda.util.Local;
@@ -395,7 +396,8 @@ public class TaskPanel extends JPanel {
                     parentPanel.calendar.jnCalendar.updateUI();
 
                     // automatically aggregate information
-                    if (hasSubTasks) {
+                    if (hasSubTasks && Configuration.get("TASK_AUTO_AGGREGATE").toString()
+            				.equalsIgnoreCase("yes")) {
                         CurrentProject.getTaskList()
                             .calculateCompletionFromSubTasks(t);
                         CurrentProject.getTaskList()
