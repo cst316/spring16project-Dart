@@ -393,6 +393,14 @@ public class TaskPanel extends JPanel {
     				Task t = CurrentProject.getTaskList().getTask(thisTaskId);
                     parentPanel.calendar.jnCalendar.renderer.setTask(t);
                     parentPanel.calendar.jnCalendar.updateUI();
+
+                    // automatically aggregate information
+                    if (hasSubTasks) {
+                        CurrentProject.getTaskList()
+                            .calculateCompletionFromSubTasks(t);
+                        CurrentProject.getTaskList()
+                            .calculateTotalEffortFromSubTasks(t);
+                    }
                 }    
                 else {
                     parentPanel.calendar.jnCalendar.renderer.setTask(null);
