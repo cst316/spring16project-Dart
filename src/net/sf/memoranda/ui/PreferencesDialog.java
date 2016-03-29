@@ -90,6 +90,10 @@ public class PreferencesDialog extends JDialog {
 	JButton browseB = new JButton();
 
 	JLabel lblExit = new JLabel();
+	
+	JLabel lblTasks = new JLabel();
+	
+	JCheckBox autoAggregateChB = new JCheckBox();
 
 	JPanel soundPanel = new JPanel();
 
@@ -417,7 +421,26 @@ public class PreferencesDialog extends JDialog {
 		gbc.insets = new Insets(2, 0, 10, 10);
 		gbc.anchor = GridBagConstraints.WEST;
 		GeneralPanel.add(askConfirmChB, gbc);
-
+		
+		//Adding the "Tasks" Label:
+		lblTasks.setHorizontalAlignment(SwingConstants.RIGHT);
+		lblTasks.setText(Local.getString("Tasks") + ":");
+		gbc = new GridBagConstraints();
+		gbc.gridx = 0;
+		gbc.gridy = 20;
+		gbc.insets = new Insets(2, 10, 10, 15);
+		gbc.anchor = GridBagConstraints.EAST;
+		GeneralPanel.add(lblTasks, gbc);
+		
+		//Adding the "Auto-Aggregate Subtasks in Task" check box:
+		autoAggregateChB.setText(Local.getString("Auto-Aggregate Subtasks in Task"));
+		gbc = new GridBagConstraints();
+		gbc.gridx = 1;
+		gbc.gridy = 20;
+		gbc.insets = new Insets(2, 0, 10, 10);
+		gbc.anchor = GridBagConstraints.WEST;
+		GeneralPanel.add(autoAggregateChB, gbc);
+		
 		// Build Tab2
 		rstPanelBorder = BorderFactory.createEmptyBorder(5, 5, 5, 5);
 		resourceTypePanel.setBorder(rstPanelBorder);
@@ -556,6 +579,10 @@ public class PreferencesDialog extends JDialog {
 			this.closeHideRB.setSelected(true);
 			// this.askConfirmChB.setEnabled(false);
 		}
+		
+		//Set what the auto-aggregate check box should display as initially:
+		autoAggregateChB.setSelected(Configuration.get("TASK_AUTO_AGGREGATE").toString()
+				.equalsIgnoreCase("yes"));
 
 		String onmin = Configuration.get("ON_MINIMIZE").toString();
 		this.minTaskbarRB.setSelected(true);
@@ -639,6 +666,11 @@ public class PreferencesDialog extends JDialog {
 			Configuration.put("ASK_ON_EXIT", "yes");
 		else
 			Configuration.put("ASK_ON_EXIT", "no");
+		
+		if (this.autoAggregateChB.isSelected())
+			Configuration.put("TASK_AUTO_AGGREGATE", "yes");
+		else
+			Configuration.put("TASK_AUTO_AGGREGATE", "no");
 
 		if (this.closeExitRB.isSelected())
 			Configuration.put("ON_CLOSE", "exit");
