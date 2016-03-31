@@ -590,20 +590,6 @@ public class TaskPanel extends JPanel {
         parentPanel.updateIndicators();
         //taskTable.updateUI();
 
-        // if the setting is enabled, aggregate from subtasks
-        if (Configuration.get("TASK_AUTO_AGGREGATE").toString()
-                .equalsIgnoreCase("yes")) {
-            // get the "root" task, then calculate
-            while (parent.getParentTask() != null) {
-                parent =  parent.getParentTask();
-            }
-
-            CurrentProject.getTaskList()
-                .calculateCompletionFromSubTasks(parent);
-            CurrentProject.getTaskList()
-                .calculateTotalEffortFromSubTasks(parent);
-        }
-
     }
 
     void calcTask_actionPerformed(ActionEvent e) {
