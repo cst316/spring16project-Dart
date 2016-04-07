@@ -42,9 +42,9 @@ import java.util.Hashtable;
 public class TaskTableModel extends AbstractTreeTableModel implements TreeTableModel {
 
     String[] columnNames = {"", Local.getString("To-do"),
-    		Local.getString("Start date"), Local.getString("End date"),
+    		Local.getString("Elapsed Time"),Local.getString("Start date"), Local.getString("End date"),
             Local.getString("Priority"), Local.getString("Status"),
-            Local.getString("Elapsed Time"),"% " + Local.getString("done")};
+            "% " + Local.getString("done")};
 
     protected EventListenerList listenerList = new EventListenerList();
 
@@ -87,21 +87,21 @@ public class TaskTableModel extends AbstractTreeTableModel implements TreeTableM
         case 1:
             return t;
         case 2:
-            return t.getStartDate().getDate();
+            return t.getElapsedTime();
         case 3:
+            return t.getStartDate().getDate();
+        case 4:
             if (t.getEndDate() == null)
                 return null;
             else
                 return t.getEndDate().getDate();
-        case 4:
-            return getPriorityString(t.getPriority());
         case 5:
+            return getPriorityString(t.getPriority());
+        case 6:
             return getStatusString(t.getStatus(CurrentDate.get()));
         case 7:
             //return new Integer(t.getProgress());
 			      return t;
-        case 6:
-            return t.getElapsedTime();
         case TaskTable.TASK_ID:
             return t.getID();
         case TaskTable.TASK:
