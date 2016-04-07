@@ -117,12 +117,12 @@ public class TaskTreeTableCellRenderer extends DefaultTreeCellRenderer implement
         }
         // if( column_name.equals(Local.getString("Start date")) ||
         // column_name.equals(Local.getString("End date")) ){
-        if ((column == 2) || (column == 3)) {
+        if ((column == 3) || (column == 4)) {
             label.setText(dateFormat.format((Date) value));
             return label;
         }
         // if( column_name.equals( Local.getString("Status") ) ){
-        if (column == 5 || column == 6) {
+        if (column == 2 || column == 5) {
             label.setText(value.toString());
             label.setForeground(getColorForTaskStatus(t, false));
             return label;
