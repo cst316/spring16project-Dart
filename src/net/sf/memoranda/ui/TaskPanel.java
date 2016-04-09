@@ -5,6 +5,7 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Point;
 import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseAdapter;
@@ -21,6 +22,7 @@ import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
 import javax.swing.JScrollPane;
 import javax.swing.JToolBar;
+import javax.swing.Timer;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
@@ -51,9 +53,11 @@ public class TaskPanel extends JPanel {
     JButton editTaskB = new JButton();
     JButton removeTaskB = new JButton();
     JButton completeTaskB = new JButton();
-    
+    JButton startTimerB = new JButton();
+    JButton stopTimerB = new JButton();
+
 	JCheckBoxMenuItem ppShowActiveOnlyChB = new JCheckBoxMenuItem();
-		
+
     JScrollPane scrollPane = new JScrollPane();
     TaskTable taskTable = new TaskTable();
 	JMenuItem ppEditTask = new JMenuItem();
@@ -64,9 +68,11 @@ public class TaskPanel extends JPanel {
 	//JMenuItem ppSubTasks = new JMenuItem();
 	//JMenuItem ppParentTask = new JMenuItem();
 	JMenuItem ppAddSubTask = new JMenuItem();
-	JMenuItem ppCalcTask = new JMenuItem();
+  JMenuItem ppCalcTask = new JMenuItem();
 	DailyItemsPanel parentPanel = null;
-
+	private int counter = 0;
+	Timer timer;
+	  
     public TaskPanel(DailyItemsPanel _parentPanel) {
         try {
             parentPanel = _parentPanel;
@@ -114,7 +120,7 @@ public class TaskPanel extends JPanel {
             }
         });
         newTaskB.setBorderPainted(false);
-        
+
         subTaskB.setIcon(
             new ImageIcon(net.sf.memoranda.ui.AppFrame.class.getResource("resources/icons/todo_new_sub.png")));
         subTaskB.setEnabled(true);
@@ -161,7 +167,7 @@ public class TaskPanel extends JPanel {
         removeTaskB.setMaximumSize(new Dimension(24, 24));
         removeTaskB.setIcon(
             new ImageIcon(net.sf.memoranda.ui.AppFrame.class.getResource("resources/icons/todo_remove.png")));
-        
+
         completeTaskB.setBorderPainted(false);
         completeTaskB.setFocusable(false);
         completeTaskB.addActionListener(new java.awt.event.ActionListener() {
@@ -176,6 +182,36 @@ public class TaskPanel extends JPanel {
         completeTaskB.setMaximumSize(new Dimension(24, 24));
         completeTaskB.setIcon(
             new ImageIcon(net.sf.memoranda.ui.AppFrame.class.getResource("resources/icons/todo_complete.png")));
+        
+        startTimerB.setBorderPainted(false);
+        startTimerB.setFocusable(false);
+        startTimerB.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                ppStartTimer_actionPerformed(e);
+            }
+        });
+        startTimerB.setPreferredSize(new Dimension(24, 24));
+        startTimerB.setRequestFocusEnabled(false);
+        startTimerB.setToolTipText(Local.getString("Start Timer"));
+        startTimerB.setMinimumSize(new Dimension(24, 24));
+        startTimerB.setMaximumSize(new Dimension(24, 24));
+        //startTimerB.setIcon(
+           // new ImageIcon(net.sf.memoranda.ui.AppFrame.class.getResource("resources/icons/todo_complete.png")));
+        
+        stopTimerB.setBorderPainted(false);
+        stopTimerB.setFocusable(false);
+        stopTimerB.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                ppStopTimer_actionPerformed(e);
+            }
+        });
+        stopTimerB.setPreferredSize(new Dimension(24, 24));
+        stopTimerB.setRequestFocusEnabled(false);
+        stopTimerB.setToolTipText(Local.getString("Stop Timer"));
+        stopTimerB.setMinimumSize(new Dimension(24, 24));
+        stopTimerB.setMaximumSize(new Dimension(24, 24));
+        //stopTimerB.setIcon(
+            //new ImageIcon(net.sf.memoranda.ui.AppFrame.class.getResource("resources/icons/todo_complete.png")));
 
 		// added by rawsushi
 //		showActiveOnly.setBorderPainted(false);
@@ -188,17 +224,17 @@ public class TaskPanel extends JPanel {
 //		showActiveOnly.setPreferredSize(new Dimension(24, 24));
 //		showActiveOnly.setRequestFocusEnabled(false);
 //		if (taskTable.isShowActiveOnly()) {
-//			showActiveOnly.setToolTipText(Local.getString("Show All"));			
+//			showActiveOnly.setToolTipText(Local.getString("Show All"));
 //		}
 //		else {
-//			showActiveOnly.setToolTipText(Local.getString("Show Active Only"));			
+//			showActiveOnly.setToolTipText(Local.getString("Show Active Only"));
 //		}
 //		showActiveOnly.setMinimumSize(new Dimension(24, 24));
 //		showActiveOnly.setMaximumSize(new Dimension(24, 24));
 //		showActiveOnly.setIcon(
 //			new ImageIcon(net.sf.memoranda.ui.AppFrame.class.getResource("resources/icons/todo_remove.png")));
 		// added by rawsushi
-		
+
 		ppShowActiveOnlyChB.setFont(new java.awt.Font("Dialog", 1, 11));
 		ppShowActiveOnlyChB.setText(
 			Local.getString("Show Active only"));
@@ -207,7 +243,7 @@ public class TaskPanel extends JPanel {
 			public void actionPerformed(ActionEvent e) {
 				toggleShowActiveOnly_actionPerformed(e);
 			}
-		});		
+		});
 		boolean isShao =
 			(Context.get("SHOW_ACTIVE_TASKS_ONLY") != null)
 				&& (Context.get("SHOW_ACTIVE_TASKS_ONLY").equals("true"));
@@ -217,10 +253,10 @@ public class TaskPanel extends JPanel {
 		/*showActiveOnly.setPreferredSize(new Dimension(24, 24));
 		showActiveOnly.setRequestFocusEnabled(false);
 		if (taskTable.isShowActiveOnly()) {
-			showActiveOnly.setToolTipText(Local.getString("Show All"));			
+			showActiveOnly.setToolTipText(Local.getString("Show All"));
 		}
 		else {
-			showActiveOnly.setToolTipText(Local.getString("Show Active Only"));			
+			showActiveOnly.setToolTipText(Local.getString("Show Active Only"));
 		}
 		showActiveOnly.setMinimumSize(new Dimension(24, 24));
 		showActiveOnly.setMaximumSize(new Dimension(24, 24));
@@ -322,9 +358,11 @@ public class TaskPanel extends JPanel {
         tasksToolBar.addSeparator(new Dimension(8, 24));
         tasksToolBar.add(editTaskB, null);
         tasksToolBar.add(completeTaskB, null);
+        tasksToolBar.add(startTimerB, null);
+        tasksToolBar.add(stopTimerB, null);
 
 		//tasksToolBar.add(showActiveOnly, null);
-        
+
 
         this.add(tasksToolBar, BorderLayout.NORTH);
 
@@ -353,30 +391,30 @@ public class TaskPanel extends JPanel {
                 boolean enbl = (taskTable.getRowCount() > 0)&&(taskTable.getSelectedRow() > -1);
                 editTaskB.setEnabled(enbl);ppEditTask.setEnabled(enbl);
                 removeTaskB.setEnabled(enbl);ppRemoveTask.setEnabled(enbl);
-				
+
 				ppCompleteTask.setEnabled(enbl);
 				completeTaskB.setEnabled(enbl);
 				ppAddSubTask.setEnabled(enbl);
 				//ppSubTasks.setEnabled(enbl); // default value to be over-written later depending on whether it has sub tasks
 				ppCalcTask.setEnabled(enbl); // default value to be over-written later depending on whether it has sub tasks
-				
+
 				/*if (taskTable.getCurrentRootTask() == null) {
 					ppParentTask.setEnabled(false);
 				}
 				else {
 					ppParentTask.setEnabled(true);
 				}XXX*/
-				
-                if (enbl) {   
+
+                if (enbl) {
     				String thisTaskId = taskTable.getModel().getValueAt(taskTable.getSelectedRow(), TaskTable.TASK_ID).toString();
-    				
+
     				boolean hasSubTasks = CurrentProject.getTaskList().hasSubTasks(thisTaskId);
     				//ppSubTasks.setEnabled(hasSubTasks);
     				ppCalcTask.setEnabled(hasSubTasks);
     				Task t = CurrentProject.getTaskList().getTask(thisTaskId);
                     parentPanel.calendar.jnCalendar.renderer.setTask(t);
                     parentPanel.calendar.jnCalendar.updateUI();
-                }    
+                }
                 else {
                     parentPanel.calendar.jnCalendar.renderer.setTask(null);
                     parentPanel.calendar.jnCalendar.updateUI();
@@ -390,27 +428,26 @@ public class TaskPanel extends JPanel {
 		//ppSubTasks.setEnabled(false);
 		//ppParentTask.setEnabled(false);
     taskPPMenu.add(ppEditTask);
-    
+
     taskPPMenu.addSeparator();
     taskPPMenu.add(ppNewTask);
     taskPPMenu.add(ppAddSubTask);
     taskPPMenu.add(ppRemoveTask);
-    
+
     taskPPMenu.addSeparator();
 	taskPPMenu.add(ppCompleteTask);
 	taskPPMenu.add(ppCalcTask);
-	
+
     //taskPPMenu.addSeparator();
-    
+
     //taskPPMenu.add(ppSubTasks);
-    
+
     //taskPPMenu.addSeparator();
     //taskPPMenu.add(ppParentTask);
-    
     taskPPMenu.addSeparator();
 	taskPPMenu.add(ppShowActiveOnlyChB);
 
-	
+
 		// define key actions in TaskPanel:
 		// - KEY:DELETE => delete tasks (recursivly).
 		// - KEY:INTERT => insert new Subtask if another is selected.
@@ -418,27 +455,27 @@ public class TaskPanel extends JPanel {
 		// - KEY:SPACE => finish Task.
 		taskTable.addKeyListener(new KeyListener() {
 			public void keyPressed(KeyEvent e){
-				if(taskTable.getSelectedRows().length>0 
+				if(taskTable.getSelectedRows().length>0
 					&& e.getKeyCode()==KeyEvent.VK_DELETE)
 					ppRemoveTask_actionPerformed(null);
-				
+
 				else if(e.getKeyCode()==KeyEvent.VK_INSERT) {
 					if(taskTable.getSelectedRows().length>0) {
 						ppAddSubTask_actionPerformed(null);
 					}
 					else {
-						ppNewTask_actionPerformed(null);						
+						ppNewTask_actionPerformed(null);
 					}
 				}
-				
+
 				else if(e.getKeyCode()==KeyEvent.VK_SPACE
 						&& taskTable.getSelectedRows().length>0) {
 					ppCompleteTask_actionPerformed(null);
 				}
 			}
 			public void	keyReleased(KeyEvent e){}
-			public void keyTyped(KeyEvent e){} 
-		});	
+			public void keyTyped(KeyEvent e){}
+		});
 
     }
 
@@ -454,14 +491,14 @@ public class TaskPanel extends JPanel {
         dlg.descriptionField.setText(t.getDescription());
         dlg.startDate.getModel().setValue(t.getStartDate().getDate());
         dlg.endDate.getModel().setValue(t.getEndDate().getDate());
-        dlg.priorityCB.setSelectedIndex(t.getPriority());                
+        dlg.priorityCB.setSelectedIndex(t.getPriority());
         dlg.effortField.setText(Util.getHoursFromMillis(t.getEffort()));
 	if((t.getStartDate().getDate()).after(t.getEndDate().getDate()))
 		dlg.chkEndDate.setSelected(false);
 	else
 		dlg.chkEndDate.setSelected(true);
 		dlg.progress.setValue(new Integer(t.getProgress()));
- 	dlg.chkEndDate_actionPerformed(null);	
+ 	dlg.chkEndDate_actionPerformed(null);
         dlg.setVisible(true);
         if (dlg.CANCELLED)
             return;
@@ -479,7 +516,7 @@ public class TaskPanel extends JPanel {
         t.setPriority(dlg.priorityCB.getSelectedIndex());
         t.setEffort(Util.getMillisFromHours(dlg.effortField.getText()));
         t.setProgress(((Integer)dlg.progress.getValue()).intValue());
-        
+
 //		CurrentProject.getTaskList().adjustParentTasks(t);
 
         CurrentStorage.get().storeTaskList(CurrentProject.getTaskList(), CurrentProject.get());
@@ -487,12 +524,33 @@ public class TaskPanel extends JPanel {
         parentPanel.updateIndicators();
         //taskTable.updateUI();
     }
+    void startTimer_actionPerformed(ActionEvent e) {
+    	Task t =
+                CurrentProject.getTaskList().getTask(
+                    taskTable.getModel().getValueAt(taskTable.getSelectedRow(), TaskTable.TASK_ID).toString());
+    	counter = Integer.parseInt(t.getElapsedTime());
+    	timer = new Timer(1000, new ActionListener() {
+	      public void actionPerformed(ActionEvent e) {
+	        counter++;
+	      }
+	    });
+    	timer.start();
+    }
+
+    void stopTimer_actionPerformed(ActionEvent e) {
+        Task t =
+            CurrentProject.getTaskList().getTask(
+                taskTable.getModel().getValueAt(taskTable.getSelectedRow(), TaskTable.TASK_ID).toString());
+        timer.stop();
+        t.setElapsedtime(Integer.toString(counter));
+        taskTable.tableChanged();
+    }
 
     void newTaskB_actionPerformed(ActionEvent e) {
         TaskDialog dlg = new TaskDialog(App.getFrame(), Local.getString("New task"));
-        
+
         //XXX String parentTaskId = taskTable.getCurrentRootTask();
-        
+
         Dimension frmSize = App.getFrame().getSize();
         Point loc = App.getFrame().getLocation();
         dlg.startDate.getModel().setValue(CurrentDate.get().getDate());
@@ -522,9 +580,9 @@ public class TaskPanel extends JPanel {
     void addSubTask_actionPerformed(ActionEvent e) {
         TaskDialog dlg = new TaskDialog(App.getFrame(), Local.getString("New Task"));
         String parentTaskId = taskTable.getModel().getValueAt(taskTable.getSelectedRow(), TaskTable.TASK_ID).toString();
-        
+
 //        Util.debug("Adding sub task under " + parentTaskId);
-        
+
         Dimension frmSize = App.getFrame().getSize();
         Point loc = App.getFrame().getLocation();
 		Task parent = CurrentProject.getTaskList().getTask(parentTaskId);
@@ -533,9 +591,9 @@ public class TaskPanel extends JPanel {
 			dlg.setStartDate(todayD);
 		else
 			dlg.setStartDate(parent.getStartDate());
-		if (parent.getEndDate() != null) 
+		if (parent.getEndDate() != null)
 			dlg.setEndDate(parent.getEndDate());
-		else 
+		else
 			dlg.setEndDate(CurrentProject.get().getEndDate());
 		dlg.setStartDateLimit(parent.getStartDate(), parent.getEndDate());
 		dlg.setEndDateLimit(parent.getStartDate(), parent.getEndDate());
@@ -565,32 +623,32 @@ public class TaskPanel extends JPanel {
         TaskCalcDialog dlg = new TaskCalcDialog(App.getFrame());
         dlg.pack();
         Task t = CurrentProject.getTaskList().getTask(taskTable.getModel().getValueAt(taskTable.getSelectedRow(), TaskTable.TASK_ID).toString());
-        
+
         Dimension frmSize = App.getFrame().getSize();
         Point loc = App.getFrame().getLocation();
-        
+
         dlg.setLocation((frmSize.width - dlg.getSize().width) / 2 + loc.x, (frmSize.height - dlg.getSize().height) / 2 + loc.y);
         dlg.setVisible(true);
         if (dlg.CANCELLED) {
-            return;            
+            return;
         }
-        
+
         TaskList tl = CurrentProject.getTaskList();
         if(dlg.calcEffortChB.isSelected()) {
             t.setEffort(tl.calculateTotalEffortFromSubTasks(t));
         }
-        
+
         if(dlg.compactDatesChB.isSelected()) {
             t.setStartDate(tl.getEarliestStartDateFromSubTasks(t));
             t.setEndDate(tl.getLatestEndDateFromSubTasks(t));
         }
-        
+
         if(dlg.calcCompletionChB.isSelected()) {
             long[] res = tl.calculateCompletionFromSubTasks(t);
             int thisProgress = (int) Math.round((((double)res[0] / (double)res[1]) * 100));
             t.setProgress(thisProgress);
         }
-        
+
 //        CalendarDate sd = new CalendarDate((Date) dlg.startDate.getModel().getValue());
 ////        CalendarDate ed = new CalendarDate((Date) dlg.endDate.getModel().getValue());
 //          CalendarDate ed;
@@ -600,8 +658,8 @@ public class TaskPanel extends JPanel {
 // 			ed = new CalendarDate(0,0,0);
 //        long effort = Util.getMillisFromHours(dlg.effortField.getText());
 //		Task newTask = CurrentProject.getTaskList().createTask(sd, ed, dlg.todoField.getText(), dlg.priorityCB.getSelectedIndex(),effort, dlg.descriptionField.getText(),parentTaskId);
-//		
-		
+//
+
         CurrentStorage.get().storeTaskList(CurrentProject.getTaskList(), CurrentProject.get());
         taskTable.tableChanged();
 //        parentPanel.updateIndicators();
@@ -610,8 +668,8 @@ public class TaskPanel extends JPanel {
 
     void listSubTasks_actionPerformed(ActionEvent e) {
         String parentTaskId = taskTable.getModel().getValueAt(taskTable.getSelectedRow(), TaskTable.TASK_ID).toString();
-        
-        //XXX taskTable.setCurrentRootTask(parentTaskId); 
+
+        //XXX taskTable.setCurrentRootTask(parentTaskId);
 		taskTable.tableChanged();
 
 //        parentPanel.updateIndicators();
@@ -620,15 +678,15 @@ public class TaskPanel extends JPanel {
 
     void parentTask_actionPerformed(ActionEvent e) {
 //    	String taskId = taskTable.getModel().getValueAt(taskTable.getSelectedRow(), TaskTable.TASK_ID).toString();
-//      
+//
 //    	Task t = CurrentProject.getTaskList().getTask(taskId);
     	/*XXX Task t2 = CurrentProject.getTaskList().getTask(taskTable.getCurrentRootTask());
-    	
+
     	String parentTaskId = t2.getParent();
     	if((parentTaskId == null) || (parentTaskId.equals(""))) {
     		parentTaskId = null;
     	}
-    	taskTable.setCurrentRootTask(parentTaskId); 
+    	taskTable.setCurrentRootTask(parentTaskId);
     	taskTable.tableChanged();*/
 
 //      parentPanel.updateIndicators();
@@ -638,17 +696,17 @@ public class TaskPanel extends JPanel {
     void removeTaskB_actionPerformed(ActionEvent e) {
         String msg;
         String thisTaskId = taskTable.getModel().getValueAt(taskTable.getSelectedRow(), TaskTable.TASK_ID).toString();
-        
+
         if (taskTable.getSelectedRows().length > 1)
             msg = Local.getString("Remove")+" "+taskTable.getSelectedRows().length +" "+Local.getString("tasks")+"?"
              + "\n"+Local.getString("Are you sure?");
-        else {        	
+        else {
         	Task t = CurrentProject.getTaskList().getTask(thisTaskId);
         	// check if there are subtasks
 			if(CurrentProject.getTaskList().hasSubTasks(thisTaskId)) {
 				msg = Local.getString("Remove task")+"\n'" + t.getText() + Local.getString("' and all subtasks") +"\n"+Local.getString("Are you sure?");
 			}
-			else {		            
+			else {
 				msg = Local.getString("Remove task")+"\n'" + t.getText() + "'\n"+Local.getString("Are you sure?");
 			}
         }
@@ -712,7 +770,7 @@ public class TaskPanel extends JPanel {
 		if ((e.getClickCount() == 2) && (taskTable.getSelectedRow() > -1)){
 			// ignore "tree" column
 			//if(taskTable.getSelectedColumn() == 1) return;
-			
+
 			editTaskB_actionPerformed(null);
 		}
         }
@@ -757,6 +815,12 @@ public class TaskPanel extends JPanel {
 
   void ppCalcTask_actionPerformed(ActionEvent e) {
       calcTask_actionPerformed(e);
+  }
+  void ppStartTimer_actionPerformed(ActionEvent e) {
+      startTimer_actionPerformed(e);
+  }
+  void ppStopTimer_actionPerformed(ActionEvent e) {
+      stopTimer_actionPerformed(e);
   }
 
 }
