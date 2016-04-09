@@ -44,8 +44,8 @@ public class TaskImpl implements Task, Comparable {
         return new String(_element.getAttribute("elapsedTime").getValue());
     }
 
-    public void setElapsedtime(String date) {
-           setAttr("elapsedTime", date);
+    public void setElapsedtime(String elapsedTime) {
+           setAttr("elapsedTime", elapsedTime);
     }
 
     public CalendarDate getStartDate() {
