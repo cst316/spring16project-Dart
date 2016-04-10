@@ -87,7 +87,7 @@ public class TaskTableModel extends AbstractTreeTableModel implements TreeTableM
         case 1:
             return t;
         case 2:
-            return t.getElapsedTime();
+            return t.getPrintableTime();
         case 3:
             return t.getStartDate().getDate();
         case 4:
