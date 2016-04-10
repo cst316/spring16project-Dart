@@ -45,6 +45,7 @@ public interface Task {
 
     String getElapsedTime();
     void setElapsedtime(String time);
+    String getPrintableTime();
 
     CalendarDate getStartDate();
     void setStartDate(CalendarDate date);

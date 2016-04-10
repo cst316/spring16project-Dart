@@ -27,7 +27,6 @@ public class TaskImpl implements Task, Comparable {
 
     private Element _element = null;
     private TaskList _tl = null;
-
     /**
      * Constructor for DefaultTask.
      */
@@ -41,7 +40,11 @@ public class TaskImpl implements Task, Comparable {
     }
 
     public String getElapsedTime() {
-        return new String(_element.getAttribute("elapsedTime").getValue());
+    	  return new String(_element.getAttribute("elapsedTime").getValue());
+    }
+
+    public String getPrintableTime() {
+        return timeConversion(Integer.parseInt(new String(_element.getAttribute("elapsedTime").getValue())));
     }
 
     public void setElapsedtime(String elapsedTime) {
@@ -396,5 +399,18 @@ public class TaskImpl implements Task, Comparable {
 		return false;
 	}
 
+	// See http://codereview.stackexchange.com/questions/62713/converting-seconds-to-hours-minutes-and-seconds/62819
+	private static String timeConversion(int totalSeconds) {
+		final int MINUTES_IN_AN_HOUR = 60;
+	    final int SECONDS_IN_A_MINUTE = 60;
+
+	    int minutes = totalSeconds / SECONDS_IN_A_MINUTE;
+	    totalSeconds -= minutes * SECONDS_IN_A_MINUTE;
+
+	    int hours = minutes / MINUTES_IN_AN_HOUR;
+	    minutes -= hours * MINUTES_IN_AN_HOUR;
+
+	    return hours + " hours " + minutes + " minutes " + totalSeconds + " seconds";
+    }
 
 }
