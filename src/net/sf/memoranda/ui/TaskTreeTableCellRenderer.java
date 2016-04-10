@@ -121,8 +121,9 @@ public class TaskTreeTableCellRenderer extends DefaultTreeCellRenderer implement
             label.setText(dateFormat.format((Date) value));
             return label;
         }
+
         // if( column_name.equals( Local.getString("Status") ) ){
-        if (column == 2 || column == 5) {
+        if (column == 5) {
             label.setText(value.toString());
             label.setForeground(getColorForTaskStatus(t, false));
             return label;
