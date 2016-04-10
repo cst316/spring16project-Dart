@@ -105,7 +105,7 @@ public class TaskListImpl implements TaskList {
 
     public Task createTask(CalendarDate startDate, CalendarDate endDate, String text, int priority, long effort, String description, String parentTaskId) {
         Element el = new Element("task");
-        el.addAttribute(new Attribute("elapsedTime", "00:00:00"));
+        el.addAttribute(new Attribute("elapsedTime", "0"));
         el.addAttribute(new Attribute("startDate", startDate.toString()));
         el.addAttribute(new Attribute("endDate", endDate != null? endDate.toString():""));
 		String id = Util.generateId();
