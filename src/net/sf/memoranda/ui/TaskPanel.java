@@ -396,7 +396,6 @@ public class TaskPanel extends JPanel {
 
 				ppCompleteTask.setEnabled(enbl);
 				completeTaskB.setEnabled(enbl);
-				ppAddSubTask.setEnabled(enbl);
 				//ppSubTasks.setEnabled(enbl); // default value to be over-written later depending on whether it has sub tasks
 				ppCalcTask.setEnabled(enbl); // default value to be over-written later depending on whether it has sub tasks
 
@@ -533,19 +532,23 @@ public class TaskPanel extends JPanel {
         //taskTable.updateUI();
     }
     void startTimer_actionPerformed(ActionEvent e) {
-    	Task t =
-                CurrentProject.getTaskList().getTask(
-                    taskTable.getModel().getValueAt(taskTable.getSelectedRow(), TaskTable.TASK_ID).toString());
-    	counter = Integer.parseInt(t.getElapsedTime());
-    	timer = new Timer(1000, new ActionListener() {
-	      public void actionPerformed(ActionEvent e) {
-	        counter++;
-	      }
-	    });
-    	timer.start();
-    	runningTaskID = t.getID();
-    	startTimerB.setEnabled(false);
-    	stopTimerB.setEnabled(true);
+    	try{
+	    	Task t =
+	                CurrentProject.getTaskList().getTask(
+	                    taskTable.getModel().getValueAt(taskTable.getSelectedRow(), TaskTable.TASK_ID).toString());
+	    	counter = Integer.parseInt(t.getElapsedTime());
+	    	timer = new Timer(1000, new ActionListener() {
+		      public void actionPerformed(ActionEvent e) {
+		        counter++;
+		      }
+		    });
+	    	timer.start();
+	    	runningTaskID = t.getID();
+	    	startTimerB.setEnabled(false);
+	    	stopTimerB.setEnabled(true);
+    	} catch(java.lang.NullPointerException exc){
+    		JOptionPane.showMessageDialog(null, "You must select a task to start timing.");
+    	}
     }
 
     void stopTimer_actionPerformed(ActionEvent e) {
@@ -556,6 +559,7 @@ public class TaskPanel extends JPanel {
 	    timer.stop();
 	    t.setElapsedtime(Integer.toString(counter));
 	    taskTable.tableChanged();
+	    runningTaskID = "";
 	    startTimerB.setEnabled(true);
 		stopTimerB.setEnabled(false);
     }
