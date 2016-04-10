@@ -410,7 +410,7 @@ public class TaskImpl implements Task, Comparable {
 	    int hours = minutes / MINUTES_IN_AN_HOUR;
 	    minutes -= hours * MINUTES_IN_AN_HOUR;
 
-	    return hours + " hours " + minutes + " minutes " + totalSeconds + " seconds";
+	    return hours + " h : " + minutes + " m : " + totalSeconds + " s";
     }
 
 }
