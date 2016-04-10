@@ -72,6 +72,7 @@ public class TaskPanel extends JPanel {
 	DailyItemsPanel parentPanel = null;
 	private int counter = 0;
 	Timer timer;
+	String runningTaskID;
 	  
     public TaskPanel(DailyItemsPanel _parentPanel) {
         try {
@@ -195,8 +196,8 @@ public class TaskPanel extends JPanel {
         startTimerB.setToolTipText(Local.getString("Start Timer"));
         startTimerB.setMinimumSize(new Dimension(24, 24));
         startTimerB.setMaximumSize(new Dimension(24, 24));
-        //startTimerB.setIcon(
-           // new ImageIcon(net.sf.memoranda.ui.AppFrame.class.getResource("resources/icons/todo_complete.png")));
+        startTimerB.setIcon(
+            new ImageIcon(net.sf.memoranda.ui.AppFrame.class.getResource("resources/icons/event_new.png")));
         
         stopTimerB.setBorderPainted(false);
         stopTimerB.setFocusable(false);
@@ -210,8 +211,9 @@ public class TaskPanel extends JPanel {
         stopTimerB.setToolTipText(Local.getString("Stop Timer"));
         stopTimerB.setMinimumSize(new Dimension(24, 24));
         stopTimerB.setMaximumSize(new Dimension(24, 24));
-        //stopTimerB.setIcon(
-            //new ImageIcon(net.sf.memoranda.ui.AppFrame.class.getResource("resources/icons/todo_complete.png")));
+        stopTimerB.setEnabled(false);
+        stopTimerB.setIcon(
+            new ImageIcon(net.sf.memoranda.ui.AppFrame.class.getResource("resources/icons/event_remove.png")));
 
 		// added by rawsushi
 //		showActiveOnly.setBorderPainted(false);
@@ -414,6 +416,12 @@ public class TaskPanel extends JPanel {
     				Task t = CurrentProject.getTaskList().getTask(thisTaskId);
                     parentPanel.calendar.jnCalendar.renderer.setTask(t);
                     parentPanel.calendar.jnCalendar.updateUI();
+                    
+                    if(t.getID().equals(runningTaskID)){
+                    	stopTimerB.setEnabled(true);
+                    } else {
+                    	stopTimerB.setEnabled(false);
+                    }
                 }
                 else {
                     parentPanel.calendar.jnCalendar.renderer.setTask(null);
@@ -535,15 +543,21 @@ public class TaskPanel extends JPanel {
 	      }
 	    });
     	timer.start();
+    	runningTaskID = t.getID();
+    	startTimerB.setEnabled(false);
+    	stopTimerB.setEnabled(true);
     }
 
     void stopTimer_actionPerformed(ActionEvent e) {
         Task t =
             CurrentProject.getTaskList().getTask(
                 taskTable.getModel().getValueAt(taskTable.getSelectedRow(), TaskTable.TASK_ID).toString());
-        timer.stop();
-        t.setElapsedtime(Integer.toString(counter));
-        taskTable.tableChanged();
+        
+	    timer.stop();
+	    t.setElapsedtime(Integer.toString(counter));
+	    taskTable.tableChanged();
+	    startTimerB.setEnabled(true);
+		stopTimerB.setEnabled(false);
     }
 
     void newTaskB_actionPerformed(ActionEvent e) {
