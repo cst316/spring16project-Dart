@@ -55,6 +55,7 @@ public class TaskPanel extends JPanel {
     JButton completeTaskB = new JButton();
     JButton startTimerB = new JButton();
     JButton stopTimerB = new JButton();
+    JButton updateTimerB = new JButton();
 
 	JCheckBoxMenuItem ppShowActiveOnlyChB = new JCheckBoxMenuItem();
 
@@ -73,7 +74,7 @@ public class TaskPanel extends JPanel {
 	private int counter = 0;
 	Timer timer;
 	String runningTaskID;
-	  
+
     public TaskPanel(DailyItemsPanel _parentPanel) {
         try {
             parentPanel = _parentPanel;
@@ -183,7 +184,7 @@ public class TaskPanel extends JPanel {
         completeTaskB.setMaximumSize(new Dimension(24, 24));
         completeTaskB.setIcon(
             new ImageIcon(net.sf.memoranda.ui.AppFrame.class.getResource("resources/icons/todo_complete.png")));
-        
+
         startTimerB.setBorderPainted(false);
         startTimerB.setFocusable(false);
         startTimerB.addActionListener(new java.awt.event.ActionListener() {
@@ -198,7 +199,7 @@ public class TaskPanel extends JPanel {
         startTimerB.setMaximumSize(new Dimension(24, 24));
         startTimerB.setIcon(
             new ImageIcon(net.sf.memoranda.ui.AppFrame.class.getResource("resources/icons/event_new.png")));
-        
+
         stopTimerB.setBorderPainted(false);
         stopTimerB.setFocusable(false);
         stopTimerB.addActionListener(new java.awt.event.ActionListener() {
@@ -215,6 +216,21 @@ public class TaskPanel extends JPanel {
         stopTimerB.setIcon(
             new ImageIcon(net.sf.memoranda.ui.AppFrame.class.getResource("resources/icons/event_remove.png")));
 
+        updateTimerB.setBorderPainted(false);
+        updateTimerB.setFocusable(false);
+        updateTimerB.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                ppUpdateTimer_actionPerformed(e);
+            }
+        });
+        updateTimerB.setPreferredSize(new Dimension(24, 24));
+        updateTimerB.setRequestFocusEnabled(false);
+        updateTimerB.setToolTipText(Local.getString("Update Time"));
+        updateTimerB.setMinimumSize(new Dimension(24, 24));
+        updateTimerB.setMaximumSize(new Dimension(24, 24));
+        updateTimerB.setEnabled(false);
+        updateTimerB.setIcon(
+            new ImageIcon(net.sf.memoranda.ui.AppFrame.class.getResource("resources/icons/event_remove.png")));
 		// added by rawsushi
 //		showActiveOnly.setBorderPainted(false);
 //		showActiveOnly.setFocusable(false);
@@ -362,6 +378,7 @@ public class TaskPanel extends JPanel {
         tasksToolBar.add(completeTaskB, null);
         tasksToolBar.add(startTimerB, null);
         tasksToolBar.add(stopTimerB, null);
+        tasksToolBar.add(updateTimerB, null);
 
 		//tasksToolBar.add(showActiveOnly, null);
 
@@ -415,11 +432,13 @@ public class TaskPanel extends JPanel {
     				Task t = CurrentProject.getTaskList().getTask(thisTaskId);
                     parentPanel.calendar.jnCalendar.renderer.setTask(t);
                     parentPanel.calendar.jnCalendar.updateUI();
-                    
+
                     if(t.getID().equals(runningTaskID)){
                     	stopTimerB.setEnabled(true);
+                      updateTimerB.setEnabled(true);
                     } else {
                     	stopTimerB.setEnabled(false);
+                      updateTimerB.setEnabled(false);
                     }
                 }
                 else {
@@ -546,6 +565,7 @@ public class TaskPanel extends JPanel {
 	    	runningTaskID = t.getID();
 	    	startTimerB.setEnabled(false);
 	    	stopTimerB.setEnabled(true);
+        updateTimerB.setEnabled(true);
     	} catch(java.lang.NullPointerException exc){
     		JOptionPane.showMessageDialog(null, "You must select a task to start timing.");
     	}
@@ -555,13 +575,23 @@ public class TaskPanel extends JPanel {
         Task t =
             CurrentProject.getTaskList().getTask(
                 taskTable.getModel().getValueAt(taskTable.getSelectedRow(), TaskTable.TASK_ID).toString());
-        
+
 	    timer.stop();
 	    t.setElapsedtime(Integer.toString(counter));
 	    taskTable.tableChanged();
 	    runningTaskID = "";
 	    startTimerB.setEnabled(true);
-		stopTimerB.setEnabled(false);
+		  stopTimerB.setEnabled(false);
+      updateTimerB.setEnabled(false);
+    }
+
+    void updateTimer_actionPerformed(ActionEvent e) {
+        Task t =
+            CurrentProject.getTaskList().getTask(
+                taskTable.getModel().getValueAt(taskTable.getSelectedRow(), TaskTable.TASK_ID).toString());
+
+	    t.setElapsedtime(Integer.toString(counter));
+	    taskTable.tableChanged();
     }
 
     void newTaskB_actionPerformed(ActionEvent e) {
@@ -840,5 +870,7 @@ public class TaskPanel extends JPanel {
   void ppStopTimer_actionPerformed(ActionEvent e) {
       stopTimer_actionPerformed(e);
   }
-
+  void ppUpdateTimer_actionPerformed(ActionEvent e) {
+      updateTimer_actionPerformed(e);
+  }
 }
