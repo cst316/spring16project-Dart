@@ -198,7 +198,7 @@ public class TaskPanel extends JPanel {
         startTimerB.setMinimumSize(new Dimension(24, 24));
         startTimerB.setMaximumSize(new Dimension(24, 24));
         startTimerB.setIcon(
-            new ImageIcon(net.sf.memoranda.ui.AppFrame.class.getResource("resources/icons/event_new.png")));
+            new ImageIcon(net.sf.memoranda.ui.AppFrame.class.getResource("resources/icons/Start-icon.png")));
 
         stopTimerB.setBorderPainted(false);
         stopTimerB.setFocusable(false);
@@ -214,7 +214,7 @@ public class TaskPanel extends JPanel {
         stopTimerB.setMaximumSize(new Dimension(24, 24));
         stopTimerB.setEnabled(false);
         stopTimerB.setIcon(
-            new ImageIcon(net.sf.memoranda.ui.AppFrame.class.getResource("resources/icons/event_remove.png")));
+            new ImageIcon(net.sf.memoranda.ui.AppFrame.class.getResource("resources/icons/Stop-red-icon.png")));
 
         updateTimerB.setBorderPainted(false);
         updateTimerB.setFocusable(false);
@@ -230,7 +230,7 @@ public class TaskPanel extends JPanel {
         updateTimerB.setMaximumSize(new Dimension(24, 24));
         updateTimerB.setEnabled(false);
         updateTimerB.setIcon(
-            new ImageIcon(net.sf.memoranda.ui.AppFrame.class.getResource("resources/icons/event_remove.png")));
+            new ImageIcon(net.sf.memoranda.ui.AppFrame.class.getResource("resources/icons/Actions-edit-redo-icon.png")));
 		// added by rawsushi
 //		showActiveOnly.setBorderPainted(false);
 //		showActiveOnly.setFocusable(false);
@@ -376,6 +376,7 @@ public class TaskPanel extends JPanel {
         tasksToolBar.addSeparator(new Dimension(8, 24));
         tasksToolBar.add(editTaskB, null);
         tasksToolBar.add(completeTaskB, null);
+        tasksToolBar.addSeparator(new Dimension(20, 24));
         tasksToolBar.add(startTimerB, null);
         tasksToolBar.add(stopTimerB, null);
         tasksToolBar.add(updateTimerB, null);
