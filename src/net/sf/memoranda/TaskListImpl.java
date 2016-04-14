@@ -156,7 +156,7 @@ public class TaskListImpl implements TaskList {
         
 		elements.put(id, el);
 		
-        Util.debug("Created task with parent " + parentTaskId);
+        Util.debug("Created task " + id + " with parent " + parentTaskId);
         
         return new TaskImpl(el, this);
     }

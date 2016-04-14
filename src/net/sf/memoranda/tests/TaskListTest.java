@@ -8,6 +8,8 @@ import org.junit.Before;
 import org.junit.Test;
 
 import junit.framework.Assert;
+
+import net.sf.memoranda.CurrentProject;
 import net.sf.memoranda.Project;
 import net.sf.memoranda.ProjectManager;
 import net.sf.memoranda.Task;
@@ -31,6 +33,7 @@ public class TaskListTest {
         CalendarDate startD = new CalendarDate(today);
         CalendarDate endD = new CalendarDate(later);
         Project proj = ProjectManager.createProject(title, startD, endD);
+        CurrentProject.set(proj);
         myTaskList = new TaskListImpl(proj);
     }
 
