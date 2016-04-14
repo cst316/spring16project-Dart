@@ -88,7 +88,6 @@ public class TaskImpl implements Task, Comparable {
 
     public void setEffort(long effort) {
         setAttr("effort", String.valueOf(effort));
-        aggregateRoot();
     }
     
     /* 
@@ -275,7 +274,6 @@ public class TaskImpl implements Task, Comparable {
         if ((p >= 0) && (p <= 100)) {
             setAttr("progress", new Integer(p).toString());
         }
-        aggregateRoot();
     }
     /**
      * @see net.sf.memoranda.Task#getPriority()
@@ -395,20 +393,5 @@ public class TaskImpl implements Task, Comparable {
         return false;
     }
 
-    /**
-     * modularized method to aggregate progress and effort
-     */
-    public void aggregateRoot() {
-        if (Configuration.get("TASK_AUTO_AGGREGATE").toString()
-                .equalsIgnoreCase("yes")) {
-            Task root = this;
-            while (null != root.getParentTask()) {
-                root = root.getParentTask();
-            }
-
-            _tl.calculateCompletionFromSubTasks(root);
-            _tl.calculateTotalEffortFromSubTasks(root);
-        }
-    }
     
 }
