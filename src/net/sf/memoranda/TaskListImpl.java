@@ -139,6 +139,7 @@ public class TaskListImpl implements TaskList {
             // subtasks by calculating on the root
             if (Configuration.get("TASK_AUTO_AGGREGATE").toString()
                     .equalsIgnoreCase("yes")) {
+                Util.debug("Auto-aggregating while creating task");
                 // get the root task
                 Task ptask = CurrentProject.getTaskList().getTask(parentTaskId);
                 while (ptask.getParentTask() != null) {

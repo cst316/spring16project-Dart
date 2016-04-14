@@ -396,8 +396,9 @@ public class TaskPanel extends JPanel {
                     parentPanel.calendar.jnCalendar.updateUI();
 
                     // automatically aggregate information
-                    if (hasSubTasks && Configuration.get("TASK_AUTO_AGGREGATE").toString()
-            				.equalsIgnoreCase("yes")) {
+                    if (hasSubTasks && Configuration.get("TASK_AUTO_AGGREGATE")
+                            .toString().equalsIgnoreCase("yes")) {
+                        Util.debug("Auto-aggregating while updating list");
                         CurrentProject.getTaskList()
                             .calculateCompletionFromSubTasks(t);
                         CurrentProject.getTaskList()
@@ -506,6 +507,16 @@ public class TaskPanel extends JPanel {
         t.setPriority(dlg.priorityCB.getSelectedIndex());
         t.setEffort(Util.getMillisFromHours(dlg.effortField.getText()));
         t.setProgress(((Integer)dlg.progress.getValue()).intValue());
+
+        TaskList tl = CurrentProject.getTaskList();
+        if (Configuration.get("TASK_AUTO_AGGREGATE").toString().equalsIgnoreCase("yes")) {
+            Task ptask = t;
+            while (ptask.getParentTask() != null) {
+                ptask = ptask.getParentTask();
+            }
+            tl.calculateCompletionFromSubTasks(ptask);
+            tl.calculateTotalEffortFromSubTasks(ptask);
+        }
         
 //		CurrentProject.getTaskList().adjustParentTasks(t);
 
