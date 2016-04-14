@@ -13,6 +13,7 @@ import net.sf.memoranda.Task;
 import net.sf.memoranda.TaskList;
 import net.sf.memoranda.TaskListImpl;
 import net.sf.memoranda.date.CalendarDate;
+import net.sf.memoranda.util.Configuration;
 
 public class CompactDatesTest {
 
@@ -31,6 +32,11 @@ public class CompactDatesTest {
 		CalendarDate endD = new CalendarDate(twentyDaysFromNow);
 		Project prj = ProjectManager.createProject(title, startD, endD);
 		tl = new TaskListImpl(prj);
+		
+		// The intent of this class is NOT to test auto-aggregation functionality;
+		// it is to test the aggregation algorithm itself.  Therefore set the
+		// auto-aggregation preference to "no":
+		Configuration.put("TASK_AUTO_AGGREGATE", "no");
 	}
 
 	/**
