@@ -1,13 +1,11 @@
 package net.sf.memoranda.tests;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 import java.util.Calendar;
 
 import org.junit.Before;
 import org.junit.Test;
-
-import junit.framework.Assert;
 
 import net.sf.memoranda.CurrentProject;
 import net.sf.memoranda.Project;
@@ -53,29 +51,29 @@ public class TaskListTest {
     @Test
     public void testCreateTask() {
 
-    	// Enforce Auto_Aggregation for Test
-    	Configuration.put("AUTO_AGGREGATION", "yes");
-    	Calendar startCalendar = Calendar.getInstance();
-    	Calendar endCalendar = Calendar.getInstance();
-    	endCalendar.add(Calendar.DAY_OF_MONTH, 10);
-    	CalendarDate startDate = new CalendarDate(startCalendar);
-    	CalendarDate endDate = new CalendarDate(endCalendar);
-    	
-    	Task rootTask = myTaskList.createTask(startDate, endDate, "root task", 0, 0, "description", null);
-    	
-    	String rootTaskID = rootTask.getID();
-    	
-    	Task childTaskOne = myTaskList.createTask(startDate, endDate, "child task 1", 0, 1, "description", rootTaskID);
-    	childTaskOne.setProgress(80);
-    	
-    	assertEquals(1, rootTask.getEffort());
-    	assertEquals(80, rootTask.getProgress());
-    	
-    	Task childTaskTwo  = myTaskList.createTask(startDate, endDate, "child task 2", 0, 1, "description", rootTaskID);
-    	childTaskTwo.setProgress(10);
-    	
-    	assertEquals(2, rootTask.getEffort());
-    	assertEquals(90, rootTask.getProgress());
+        // Enforce Auto_Aggregation for Test
+        Configuration.put("AUTO_AGGREGATION", "yes");
+        Calendar startCalendar = Calendar.getInstance();
+        Calendar endCalendar = Calendar.getInstance();
+        endCalendar.add(Calendar.DAY_OF_MONTH, 10);
+        CalendarDate startDate = new CalendarDate(startCalendar);
+        CalendarDate endDate = new CalendarDate(endCalendar);
+        
+        Task rootTask = myTaskList.createTask(startDate, endDate, "root task", 0, 0, "description", null);
+        
+        String rootTaskID = rootTask.getID();
+        
+        Task childTaskOne = myTaskList.createTask(startDate, endDate, "child task 1", 0, 1, "description", rootTaskID);
+        childTaskOne.setProgress(80);
+        
+        assertEquals(1, childTaskOne.getEffort());
+        assertEquals(80, childTaskOne.getProgress());
+        
+        Task childTaskTwo  = myTaskList.createTask(startDate, endDate, "child task 2", 0, 2, "description", rootTaskID);
+        childTaskTwo.setProgress(10);
+        
+        assertEquals(2, childTaskTwo.getEffort());
+        assertEquals(10, childTaskTwo.getProgress());
     	
     }
 }
