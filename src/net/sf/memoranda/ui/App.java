@@ -193,7 +193,7 @@ public class App {
 		if (frame == null)
 			return;
 
-		if (Configuration.get("ON_CLOSE").equals("minimize")) {
+		if (Configuration.get("ON_CLOSE").equals("minimize") && SystemTray.isSupported()) {
 			frame.dispose();
 		} else{
 			frame.doExit();
