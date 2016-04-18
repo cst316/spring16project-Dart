@@ -56,6 +56,8 @@ import nu.xom.Document;
 import nu.xom.Element;
 import nu.xom.Elements;
 
+//ajcallos 2/16/2016
+import java.awt.SystemTray;
 
 /**
  * 
@@ -105,8 +107,8 @@ public class AppFrame extends JFrame {
 
     public Action minimizeAction = new AbstractAction("Close the window") {
         public void actionPerformed(ActionEvent e) {
-            doMinimize();
-        }
+            	App.closeWindow();
+            }
     };
 
     public Action preferencesAction = new AbstractAction("Preferences") {
@@ -697,8 +699,9 @@ public class AppFrame extends JFrame {
 
     protected void processWindowEvent(WindowEvent e) {
         if (e.getID() == WindowEvent.WINDOW_CLOSING) {
-            if (Configuration.get("ON_CLOSE").equals("exit"))
-                doExit();
+            if (Configuration.get("ON_CLOSE").equals("exit") || !SystemTray.isSupported()) {
+            	doExit();
+            }
             else
                 doMinimize();
         }
