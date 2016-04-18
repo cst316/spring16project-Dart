@@ -2654,6 +2654,9 @@ public class HTMLEditor extends JPanel {
 					el.getEndOffset() - el.getStartOffset(),
 					attrs,
 					true);
+            if (editor.getCaretPosition() < document.getLength()) {
+                editor.setCaretPosition(editor.getCaretPosition() + 1);
+            }
 			return;
 		}
 		String text = "&nbsp;";
