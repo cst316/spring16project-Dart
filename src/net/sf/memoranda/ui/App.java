@@ -36,6 +36,8 @@ public class App {
 	public static final String OFFLINE_GUIDE_URL = App.class.getResource(".") + "resources/userguide/index.html";
 	public static final String BUGS_TRACKER_URL = "http://sourceforge.net/tracker/?group_id=90997&atid=595566";
 	public static final String WEBSITE_URL = "http://memoranda.sourceforge.net";
+	public static final String SYSTEM_TRAY_ICON_PATH = "resources/memorandaTrayIcon.gif";
+	public static final int SYSTEM_TRAY_CLICK_COUNT = 2;
 
 	private JFrame splash = null;
 
@@ -109,21 +111,18 @@ public class App {
 			try {
 				initTray();
 			} catch (AWTException ex){
-				//TODO:
+				System.out.println(ex.getStackTrace().toString());
 			}
 		} 
 	}
 	
 	/** 
 	 * Initializes the Memoranda icon in the system tray
-	 * Uses the oracle example at https://docs.oracle.com/javase/tutorial/uiswing/misc/systemtray.html as the baseline
-	 * @author ajcallos 
-	 * added 2/16/2016 
+	 * Uses the oracle example at https://docs.oracle.com/javase/tutorial/uiswing/misc/systemtray.html as the baseline 
 	 */
 	private void initTray() throws AWTException	{
-		final String iconPath = "resources/memorandaTrayIcon.gif";
 		final PopupMenu trayPopupMenu = new PopupMenu();
-		final TrayIcon trayIcon = new TrayIcon(new ImageIcon(App.class.getResource(iconPath)).getImage());
+		final TrayIcon trayIcon = new TrayIcon(new ImageIcon(App.class.getResource(SYSTEM_TRAY_ICON_PATH)).getImage());
 		final SystemTray tray = SystemTray.getSystemTray();
 		
 		MenuItem exitItem = new MenuItem("Exit");
@@ -144,7 +143,7 @@ public class App {
 		// Doubleclick action
 		trayIcon.addMouseListener(new MouseAdapter(){
 			public void mouseClicked(MouseEvent e){
-				if (e.getClickCount() == 2){
+				if (e.getClickCount() == SYSTEM_TRAY_CLICK_COUNT){
 					init();
 				}
 			}
