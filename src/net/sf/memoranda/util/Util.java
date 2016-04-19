@@ -87,8 +87,9 @@ public class Util {
     	s = s.trim();
     	Scanner scan = new Scanner(s);
     	int[] hrs = new int[7];
-    	for(int i = 0; i < 7; i++)
+    	for(int i = 0; i < 7; i++){
     		hrs[i] = scan.nextInt();
+    	}
     	scan.close();
     	return hrs;
     }

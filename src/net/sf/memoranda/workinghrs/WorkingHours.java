@@ -89,46 +89,60 @@ public class WorkingHours {
 	
 	//Setters
 	public void setMondayHours(int hours) throws IllegalArgumentException {
-		if(hours >= 0  && hours <= 24)
+		if(hours >= 0  && hours <= 24){
 			this.mon = hours;
-		else
+		}
+		else {
 			throw new IllegalArgumentException("ERROR: Hours must be from 0 to 24");
+		}
 	}
 	public void setTuesdayHours(int hours) throws IllegalArgumentException {
-		if(hours >= 0  && hours <= 24)
+		if(hours >= 0  && hours <= 24){
 			this.tue = hours;
-		else
+		}
+		else {
 			throw new IllegalArgumentException("ERROR: Hours must be from 0 to 24");
+		}
 	}
 	public void setWednesdayHours(int hours) throws IllegalArgumentException {
-		if(hours >= 0  && hours <= 24)
+		if(hours >= 0  && hours <= 24){
 			this.wed = hours;
-		else
+		}
+		else {
 			throw new IllegalArgumentException("ERROR: Hours must be from 0 to 24");
+		}
 	}
 	public void setThursdayHours(int hours) throws IllegalArgumentException {
-		if(hours >= 0  && hours <= 24)
+		if(hours >= 0  && hours <= 24){
 			this.thu = hours;
-		else
+		}
+		else {
 			throw new IllegalArgumentException("ERROR: Hours must be from 0 to 24");
+		}
 	}
 	public void setFridayHours(int hours) throws IllegalArgumentException {
-		if(hours >= 0  && hours <= 24)
+		if(hours >= 0  && hours <= 24){
 			this.fri = hours;
-		else
+		}
+		else {
 			throw new IllegalArgumentException("ERROR: Hours must be from 0 to 24");
+		}
 	}
 	public void setSaturdayHours(int hours) throws IllegalArgumentException {
-		if(hours >= 0  && hours <= 24)
+		if(hours >= 0  && hours <= 24){
 			this.sat = hours;
-		else
+		}
+		else {
 			throw new IllegalArgumentException("ERROR: Hours must be from 0 to 24");
+		}
 	}
 	public void setSundayHours(int hours) throws IllegalArgumentException {
-		if(hours >= 0  && hours <= 24)
+		if(hours >= 0  && hours <= 24){
 			this.sun = hours;
-		else
+		}
+		else {
 			throw new IllegalArgumentException("ERROR: Hours must be from 0 to 24");
+		}
 	}
 	
 	public int getWeeklyHourTotal(){

@@ -102,13 +102,16 @@ public class ProjectImpl implements Project {
     
     public WorkingHours getWorkingHours(){
     	Attribute d = _root.getAttribute("workingHrs");
-        if (d == null) return null;
+        if (d == null) {
+        	return null;
+        }
         return new WorkingHours(d.getValue());    
     }
     
     public void setWorkingHours(WorkingHours hrs){
-    	if (hrs != null)
+    	if (hrs != null){
             setAttr("workingHrs", hrs.toString());
+    	}
     }
 
     private boolean isFrozen() {
