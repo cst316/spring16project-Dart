@@ -13,6 +13,14 @@ import javax.swing.UIManager;
 import net.sf.memoranda.EventsScheduler;
 import net.sf.memoranda.util.Configuration;
 
+import java.awt.SystemTray;
+import java.awt.TrayIcon;
+import javax.swing.ImageIcon;
+import java.awt.MenuItem;
+import java.awt.PopupMenu;
+import java.awt.AWTException;
+import java.awt.event.*;
+
 /**
  *
  * Copyright (c) 2003 Memoranda Team. http://memoranda.sf.net
@@ -28,6 +36,8 @@ public class App {
 	public static final String OFFLINE_GUIDE_URL = App.class.getResource(".") + "resources/userguide/index.html";
 	public static final String BUGS_TRACKER_URL = "http://sourceforge.net/tracker/?group_id=90997&atid=595566";
 	public static final String WEBSITE_URL = "http://memoranda.sourceforge.net";
+	public static final String SYSTEM_TRAY_ICON_PATH = "resources/memorandaTrayIcon.gif";
+	public static final int SYSTEM_TRAY_CLICK_COUNT = 2;
 
 	private JFrame splash = null;
 
@@ -36,10 +46,8 @@ public class App {
        The actual values are substituted by the Ant build script using
        'version' property and datestamp.*/
 
-	public static final String VERSION_INFO = "@VERSION@";
-	public static final String BUILD_INFO = "@BUILD@";
-
-	/*========================================================================*/
+	public static final String VERSION_INFO = "1.0-rc3.1";
+	public static final String BUILD_INFO = "20160413.20";
 
 	public static AppFrame getFrame() {
 		return frame;
@@ -98,6 +106,48 @@ public class App {
 		}
 		if (!Configuration.get("SHOW_SPLASH").equals("no"))
 			splash.dispose();
+		
+		if (SystemTray.isSupported()){
+			try {
+				initTray();
+			} catch (AWTException ex){
+				System.out.println(ex.getStackTrace().toString());
+			}
+		} 
+	}
+	
+	/** 
+	 * Initializes the Memoranda icon in the system tray
+	 * Uses the oracle example at https://docs.oracle.com/javase/tutorial/uiswing/misc/systemtray.html as the baseline 
+	 */
+	private void initTray() throws AWTException	{
+		final PopupMenu trayPopupMenu = new PopupMenu();
+		final TrayIcon trayIcon = new TrayIcon(new ImageIcon(App.class.getResource(SYSTEM_TRAY_ICON_PATH)).getImage());
+		final SystemTray tray = SystemTray.getSystemTray();
+		
+		MenuItem exitItem = new MenuItem("Exit");
+		
+		trayPopupMenu.add(exitItem);
+		
+		trayIcon.setPopupMenu(trayPopupMenu);
+		tray.add(trayIcon);
+		
+		// Sets exit action
+		exitItem.addActionListener(new ActionListener(){
+			public void actionPerformed(ActionEvent e) {
+				tray.remove(trayIcon);
+				System.exit(0);
+			}
+		});
+		
+		// Doubleclick action
+		trayIcon.addMouseListener(new MouseAdapter(){
+			public void mouseClicked(MouseEvent e){
+				if (e.getClickCount() == SYSTEM_TRAY_CLICK_COUNT){
+					init();
+				}
+			}
+		});
 	}
 
 	void init() {
@@ -136,14 +186,13 @@ public class App {
 		frame.setVisible(true);
 		frame.toFront();
 		frame.requestFocus();
-
 	}
 
 	public static void closeWindow() {
 		if (frame == null)
 			return;
 
-		if (Configuration.get("ON_CLOSE").equals("minimize")) {
+		if (Configuration.get("ON_CLOSE").equals("minimize") && SystemTray.isSupported()) {
 			frame.dispose();
 		} else{
 			frame.doExit();
