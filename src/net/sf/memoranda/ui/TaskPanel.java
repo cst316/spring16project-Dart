@@ -573,26 +573,34 @@ public class TaskPanel extends JPanel {
     }
 
     void stopTimer_actionPerformed(ActionEvent e) {
-        Task t =
-            CurrentProject.getTaskList().getTask(
-                taskTable.getModel().getValueAt(taskTable.getSelectedRow(), TaskTable.TASK_ID).toString());
+      try {
+          Task t =
+              CurrentProject.getTaskList().getTask(
+                  taskTable.getModel().getValueAt(taskTable.getSelectedRow(), TaskTable.TASK_ID).toString());
 
-	    timer.stop();
-	    t.setElapsedtime(Integer.toString(counter));
-	    taskTable.tableChanged();
-	    runningTaskID = "";
-	    startTimerB.setEnabled(true);
-		  stopTimerB.setEnabled(false);
-      updateTimerB.setEnabled(false);
+  	    timer.stop();
+  	    t.setElapsedtime(Integer.toString(counter));
+  	    taskTable.tableChanged();
+  	    runningTaskID = "";
+  	    startTimerB.setEnabled(true);
+  		  stopTimerB.setEnabled(false);
+        updateTimerB.setEnabled(false);
+      } catch(java.lang.NullPointerException exc){
+        JOptionPane.showMessageDialog(null, "You must select a task to stop.");
+      }
     }
 
     void updateTimer_actionPerformed(ActionEvent e) {
-        Task t =
-            CurrentProject.getTaskList().getTask(
-                taskTable.getModel().getValueAt(taskTable.getSelectedRow(), TaskTable.TASK_ID).toString());
+      try {
+          Task t =
+              CurrentProject.getTaskList().getTask(
+                  taskTable.getModel().getValueAt(taskTable.getSelectedRow(), TaskTable.TASK_ID).toString());
 
-	    t.setElapsedtime(Integer.toString(counter));
-	    taskTable.tableChanged();
+  	    t.setElapsedtime(Integer.toString(counter));
+  	    taskTable.tableChanged();
+      } catch(java.lang.NullPointerException exc){
+        JOptionPane.showMessageDialog(null, "You must select a task to update.");
+      }
     }
 
     void newTaskB_actionPerformed(ActionEvent e) {
