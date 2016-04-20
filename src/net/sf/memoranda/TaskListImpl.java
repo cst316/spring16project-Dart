@@ -2,7 +2,7 @@
  * TaskListImpl.java
  * Created on 21.02.2003, 12:29:54 Alex
  * Package: net.sf.memoranda
- * 
+ *
  * @author Alex V. Alishevskikh, alex@openmechanics.net
  * Copyright (c) 2003 Memoranda Team. http://memoranda.sf.net
  */
@@ -28,7 +28,7 @@ import nu.xom.Nodes;
 //import nux.xom.xquery.XQueryUtil;
 
 /**
- * 
+ *
  */
 /*$Id: TaskListImpl.java,v 1.14 2006/07/03 11:59:19 alexeya Exp $*/
 public class TaskListImpl implements TaskList {
@@ -36,14 +36,14 @@ public class TaskListImpl implements TaskList {
     private Project _project = null;
     private Document _doc = null;
     private Element _root = null;
-	
+
 	/*
 	 * Hastable of "task" XOM elements for quick searching them by ID's
-	 * (ID => element) 
+	 * (ID => element)
 	 */
+
 	private Hashtable<String, Element> elements =
         new Hashtable<String, Element>();
-    
     /**
      * Constructor for TaskListImpl.
      */
@@ -53,17 +53,17 @@ public class TaskListImpl implements TaskList {
         _project = prj;
 		buildElements(_root);
     }
-    
-    public TaskListImpl(Project prj) {            
+
+    public TaskListImpl(Project prj) {
             _root = new Element("tasklist");
             _doc = new Document(_root);
             _project = prj;
     }
-    
+
 	public Project getProject() {
 		return _project;
 	}
-		
+
 	/*
 	 * Build the hashtable recursively
 	 */
@@ -75,9 +75,9 @@ public class TaskListImpl implements TaskList {
 			buildElements(el);
 		}
 	}
-	
+
     /**
-     * All methods to obtain list of tasks are consolidated under 
+     * All methods to obtain list of tasks are consolidated under
      * getAllSubTasks and getActiveSubTasks. If a root task is required, just
      * send a null taskId
      */
@@ -90,21 +90,21 @@ public class TaskListImpl implements TaskList {
             if (task == null)
                 return new Vector();
             Elements subTasks = task.getChildElements("task");
-            return convertToTaskObjects(subTasks);    	    		
+            return convertToTaskObjects(subTasks);
     	}
     }
-    
+
     public Collection getTopLevelTasks() {
         return getAllRootTasks();
     }
 
     /**
-     * All methods to obtain list of tasks are consolidated under 
+     * All methods to obtain list of tasks are consolidated under
      * getAllSubTasks and getActiveSubTasks. If a root task is required, just
      * send a null taskId
      */
     public Collection getActiveSubTasks(String taskId,CalendarDate date) {
-        Collection allTasks = getAllSubTasks(taskId);        
+        Collection allTasks = getAllSubTasks(taskId);
         return filterActiveTasks(allTasks,date);
     }
 
@@ -112,6 +112,7 @@ public class TaskListImpl implements TaskList {
             String text, int priority, long effort, String description,
             String parentTaskId) {
         Element el = new Element("task");
+        el.addAttribute(new Attribute("elapsedTime", "0"));
         el.addAttribute(new Attribute("startDate", startDate.toString()));
         el.addAttribute(new Attribute("endDate",
                     endDate != null? endDate.toString():""));
@@ -120,7 +121,7 @@ public class TaskListImpl implements TaskList {
         el.addAttribute(new Attribute("progress", "0"));
         el.addAttribute(new Attribute("effort", String.valueOf(effort)));
         el.addAttribute(new Attribute("priority", String.valueOf(priority)));
-                
+
         Element txt = new Element("text");
         txt.appendChild(text);
         el.appendChild(txt);
@@ -153,14 +154,14 @@ public class TaskListImpl implements TaskList {
             }
 
         }
-        
+
 		elements.put(id, el);
-		
+
         Util.debug("Created task " + id + " with parent " + parentTaskId);
-        
+
         return new TaskImpl(el, this);
     }
-	
+
 	/**
      * @see net.sf.memoranda.TaskList#removeTask(import net.sf.memoranda.Task)
      */
@@ -168,7 +169,7 @@ public class TaskListImpl implements TaskList {
     public void removeTask(Task task) {
         String parentTaskId = task.getParentId();
         if (parentTaskId == null) {
-            _root.removeChild(task.getContent());            
+            _root.removeChild(task.getContent());
         }
         else {
             Element parentNode = getTaskElement(parentTaskId);
@@ -189,13 +190,13 @@ public class TaskListImpl implements TaskList {
     }
 
     public Task getTask(String id) {
-        Util.debug("Getting task " + id);          
-        return new TaskImpl(getTaskElement(id), this);          
+        Util.debug("Getting task " + id);
+        return new TaskImpl(getTaskElement(id), this);
     }
-    
+
     public boolean hasParentTask(String id) {
     	Element t = getTaskElement(id);
-    	
+
     	Node parentNode = t.getParent();
     	if (parentNode instanceof Element) {
     	    Element parent = (Element) parentNode;
@@ -213,15 +214,15 @@ public class TaskListImpl implements TaskList {
 
     /**
      * @see net.sf.memoranda.TaskList#getXMLContent()
-     */	 
+     */
     public Document getXMLContent() {
         return _doc;
     }
-    
+
     /**
      * Recursively calculate total effort based on subtasks for every node in
      * the task tree. The values are saved as they are calculated as well
-     * 
+     *
      * @param t
      * @return
      */
@@ -234,7 +235,7 @@ public class TaskListImpl implements TaskList {
             	totalEffort = totalEffort + calculateTotalEffortFromSubTasks(e);
             }
             t.setEffort(totalEffort);
-            return totalEffort;            
+            return totalEffort;
         }
         else {
             return t.getEffort();
@@ -244,7 +245,7 @@ public class TaskListImpl implements TaskList {
     /**
      * Looks through the entire sub task tree and corrects any inconsistencies
      * in start dates
-     * 
+     *
      * @param t
      * @return
      */
@@ -272,7 +273,7 @@ public class TaskListImpl implements TaskList {
     /**
      * Looks through the entire sub task tree and corrects any inconsistencies
      * in end dates
-     * 
+     *
      * @param t
      * @return
      */
@@ -296,18 +297,18 @@ public class TaskListImpl implements TaskList {
             return t.getEndDate();
         }
     }
-    
+
     /**
      * Looks through the entire sub task tree and calculates progress on all
      * parent task nodes
-     * 
+     *
      * @param t
      * @return long[] of size 2. First long is expended effort in milliseconds,
      * 2nd long is total effort in milliseconds
      */
     public long[] calculateCompletionFromSubTasks(Task t) {
 //        Util.debug("Task " + t.getText());
-        
+
         long[] res = new long[2];
         long expendedEffort = 0; // milliseconds
         long totalEffort = 0; // milliseconds
@@ -319,8 +320,8 @@ public class TaskListImpl implements TaskList {
             	expendedEffort = expendedEffort + subTaskCompletion[0];
             	totalEffort = totalEffort + subTaskCompletion[1];
             }
-            
-            int thisProgress = (int) Math.round((((double)expendedEffort 
+
+            int thisProgress = (int) Math.round((((double)expendedEffort
                             / (double)totalEffort) * 100));
             t.setProgress(thisProgress);
 
@@ -330,7 +331,7 @@ public class TaskListImpl implements TaskList {
 
             res[0] = expendedEffort;
             res[1] = totalEffort;
-            return res;            
+            return res;
         }
         else {
             long eff = t.getEffort();
@@ -339,39 +340,39 @@ public class TaskListImpl implements TaskList {
             if (eff == 0) {
                 eff = 1;
             }
-            res[0] = Math.round((double)(t.getProgress()* eff) / 100d); 
+            res[0] = Math.round((double)(t.getProgress()* eff) / 100d);
             res[1] = eff;
             return res;
         }
-    }    
+    }
     /*
      * private methods below this line
      */
     private Element getTaskElement(String id) {
-               
+
 		/*Nodes nodes = XQueryUtil.xquery(_doc, "//task[@id='" + id + "']");
         if (nodes.size() > 0) {
             Element el = (Element) nodes.get(0);
-            return el;            
+            return el;
         }
         else {
-            Util.debug("Task " + id + " cannot be found in project " 
+            Util.debug("Task " + id + " cannot be found in project "
                 + _project.getTitle());
             return null;
         } */
 		Element el = (Element)elements.get(id);
 		if (el == null) {
-			Util.debug("Task " + id + " cannot be found in project " 
+			Util.debug("Task " + id + " cannot be found in project "
                     + _project.getTitle());
 		}
 		return el;
     }
-    
+
     private Collection getAllRootTasks() {
         Elements tasks = _root.getChildElements("task");
-        return convertToTaskObjects(tasks);    	    		
+        return convertToTaskObjects(tasks);
     }
-    
+
     private Collection convertToTaskObjects(Elements tasks) {
         Vector v = new Vector();
 
@@ -394,8 +395,8 @@ public class TaskListImpl implements TaskList {
     }
 
     private boolean isActive(Task t,CalendarDate date) {
-    	if ((t.getStatus(date) == Task.ACTIVE) 
-                || (t.getStatus(date) == Task.DEADLINE) 
+    	if ((t.getStatus(date) == Task.ACTIVE)
+                || (t.getStatus(date) == Task.DEADLINE)
                 || (t.getStatus(date) == Task.FAILED)) {
     		return true;
     	}
@@ -406,18 +407,18 @@ public class TaskListImpl implements TaskList {
 
     /*
      * deprecated methods below
-     * 
+     *
      */
-                    
+
 //    public void adjustParentTasks(Task t) {
 //    	if ((t.getParent() == null) || (t.getParent().equals(""))){
 //    		return;
 //    	}
 //    	else {
 //    		Task p = getTask(t.getParent());
-//    		
+//
 //    		long totalEffort = calculateTotalEffortFromSubTasks(p);
-//    		
+//
 //    		if(totalEffort > p.getEffort()) {
 //    			p.setEffort(totalEffort);
 //    		}
@@ -427,11 +428,11 @@ public class TaskListImpl implements TaskList {
 //    		if(t.getEndDate().after(p.getEndDate())) {
 //    			p.setEndDate(t.getEndDate());
 //    		}
-//    		
+//
 //        	if (!((p.getParent() == null) || (p.getParent().equals("")))){
 //        		// still has parent, go up the tree
 //        		adjustParentTasks(p);
-//        	}    		
+//        	}
 //    	}
 //    }
 }
