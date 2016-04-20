@@ -14,6 +14,7 @@ import net.sf.memoranda.TaskList;
 import net.sf.memoranda.TaskListImpl;
 import net.sf.memoranda.date.CalendarDate;
 import net.sf.memoranda.util.Configuration;
+import net.sf.memoranda.workinghrs.WorkingHours;
 
 public class CompactDatesTest {
 
@@ -30,7 +31,7 @@ public class CompactDatesTest {
 		// Need a project to create a tasklist; this initial setup is necessary
 		CalendarDate startD = new CalendarDate(today);
 		CalendarDate endD = new CalendarDate(twentyDaysFromNow);
-		Project prj = ProjectManager.createProject(title, startD, endD);
+		Project prj = ProjectManager.createProject(title, startD, endD, new WorkingHours());
 		tl = new TaskListImpl(prj);
 		
 		// The intent of this class is NOT to test auto-aggregation functionality;

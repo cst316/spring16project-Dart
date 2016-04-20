@@ -18,6 +18,7 @@ import java.util.Calendar;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Random;
+import java.util.Scanner;
 import java.util.Set;
 
 import javax.swing.JFileChooser;
@@ -80,6 +81,17 @@ public class Util {
         }
         int[] ret = {d.getDay(), d.getMonth(), d.getYear()};
         return ret;*/
+    }
+    
+    public static int[] parseWorkingHrsStamp(String s){
+    	s = s.trim();
+    	Scanner scan = new Scanner(s);
+    	int[] hrs = new int[7];
+    	for(int i = 0; i < 7; i++){
+    		hrs[i] = scan.nextInt();
+    	}
+    	scan.close();
+    	return hrs;
     }
 
     public static String getEnvDir() {

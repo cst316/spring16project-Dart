@@ -16,16 +16,11 @@ import java.util.Vector;
 import net.sf.memoranda.date.CalendarDate;
 import net.sf.memoranda.util.Configuration;
 import net.sf.memoranda.util.Util;
-
 import nu.xom.Attribute;
 import nu.xom.Document;
 import nu.xom.Element;
 import nu.xom.Elements;
 import nu.xom.Node;
-import nu.xom.Nodes;
-//import nu.xom.converters.*;
-//import org.apache.xerces.dom.*;
-//import nux.xom.xquery.XQueryUtil;
 
 /**
  *
@@ -135,31 +130,31 @@ public class TaskListImpl implements TaskList {
         } else {
             Element parent = getTaskElement(parentTaskId);
             parent.appendChild(el);
-
-            // if the preference is set, automatically aggregate data from
-            // subtasks by calculating on the root
-            if (Configuration.get("TASK_AUTO_AGGREGATE").toString()
-                    .equalsIgnoreCase("yes")) {
-                Util.debug("Auto-aggregating while creating task");
-                // get the root task
-                Task ptask = CurrentProject.getTaskList().getTask(parentTaskId);
-                while (ptask.getParentTask() != null) {
-                    ptask = ptask.getParentTask();
-                }
-
-                CurrentProject.getTaskList()
-                    .calculateCompletionFromSubTasks(ptask);
-                CurrentProject.getTaskList()
-                    .calculateTotalEffortFromSubTasks(ptask);
-            }
-
         }
-
 		elements.put(id, el);
 
         Util.debug("Created task " + id + " with parent " + parentTaskId);
 
-        return new TaskImpl(el, this);
+        Task newTask = new TaskImpl(el, this);
+
+        // if the preference is set, automatically aggregate data from
+        // subtasks by calculating on the root
+        if (Configuration.get("TASK_AUTO_AGGREGATE").toString()
+                .equalsIgnoreCase("yes")) {
+            Util.debug("Auto-aggregating while creating task");
+            // get the root task
+            Task ptask = newTask;
+            while (ptask.getParentTask() != null) {
+                ptask = ptask.getParentTask();
+            }
+
+            CurrentProject.getTaskList()
+                .calculateCompletionFromSubTasks(ptask);
+            CurrentProject.getTaskList()
+                .calculateTotalEffortFromSubTasks(ptask);
+        }
+        return newTask;
+
     }
 
 	/**
