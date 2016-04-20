@@ -134,31 +134,32 @@ public class TaskListImpl implements TaskList {
         } else {
             Element parent = getTaskElement(parentTaskId);
             parent.appendChild(el);
-
-            // if the preference is set, automatically aggregate data from
-            // subtasks by calculating on the root
-            if (Configuration.get("TASK_AUTO_AGGREGATE").toString()
-                    .equalsIgnoreCase("yes")) {
-                Util.debug("Auto-aggregating while creating task");
-                // get the root task
-                Task ptask = CurrentProject.getTaskList().getTask(parentTaskId);
-                while (ptask.getParentTask() != null) {
-                    ptask = ptask.getParentTask();
-                }
-
-                CurrentProject.getTaskList()
-                    .calculateCompletionFromSubTasks(ptask);
-                CurrentProject.getTaskList()
-                    .calculateTotalEffortFromSubTasks(ptask);
-            }
-
         }
         
 		elements.put(id, el);
 		
         Util.debug("Created task " + id + " with parent " + parentTaskId);
         
-        return new TaskImpl(el, this);
+        Task newTask = new TaskImpl(el, this);
+        
+        // if the preference is set, automatically aggregate data from
+        // subtasks by calculating on the root
+        if (Configuration.get("TASK_AUTO_AGGREGATE").toString()
+                .equalsIgnoreCase("yes")) {
+            Util.debug("Auto-aggregating while creating task");
+            // get the root task
+            Task ptask = newTask;
+            while (ptask.getParentTask() != null) {
+                ptask = ptask.getParentTask();
+            }
+
+            CurrentProject.getTaskList()
+                .calculateCompletionFromSubTasks(ptask);
+            CurrentProject.getTaskList()
+                .calculateTotalEffortFromSubTasks(ptask);
+        }
+        
+        return newTask;
     }
 	
 	/**
