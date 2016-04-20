@@ -1038,7 +1038,7 @@ public class AppFrame extends JFrame {
         chooser.setDialogTitle(Local.getString("Import notes"));
         chooser.setAcceptAllFileFilterUsed(false);
         chooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
-            chooser.addChoosableFileFilter(new AllFilesFilter(AllFilesFilter.HTML));
+        chooser.addChoosableFileFilter(new AllFilesFilter(AllFilesFilter.HTML));
         chooser.setPreferredSize(new Dimension(550, 375));
 
         File lastSel = null;
@@ -1062,34 +1062,42 @@ public class AppFrame extends JFrame {
         Builder parser = new Builder();
         String id="", name="", content = "";
         try{
-                Document document = parser.build(f);
-                content = document.getRootElement().getFirstChildElement("body").getValue();
-                content = content.substring(content.indexOf("\n", content.indexOf("-")));
-                content = content.replace("<p>","").replace("</p>","\n");
-                name = f.getName().substring(0,f.getName().lastIndexOf("."));	
-                Element item;
-                id=Util.generateId();
-                System.out.println(id+" "+name+" "+content);
-                notesName.put(id, name);
-                notesContent.put(id, content);
-                JEditorPane p = new JEditorPane();
-                p.setContentType("text/html");
-                
-                for (Map.Entry<String,String> entry : notesName.entrySet()){
-                        id = entry.getKey();
-                        System.out.println(id+" "+name+" "+content);
-                        p.setText(content);
-                        HTMLDocument doc = (HTMLDocument)p.getDocument();
-                        Note note = CurrentProject.getNoteList().createNoteForDate(CurrentDate.get());
-                note.setTitle(name);
-                        note.setId(Util.generateId());
-                CurrentStorage.get().storeNote(note, doc);
-                }
-                workPanel.dailyItemsPanel.notesControlPane.refresh();
+                buildImportNotes(f, notesName, notesContent, parser);
                 
         }catch(Exception exc){
                 exc.printStackTrace();
         }
     }
+	private void buildImportNotes(java.io.File f, HashMap<String, String> notesName,
+			HashMap<String, String> notesContent, Builder parser)
+					throws ParsingException, ValidityException, IOException {
+		String id;
+		String name;
+		String content;
+		Document document = parser.build(f);
+		content = document.getRootElement().getFirstChildElement("body").getValue();
+		content = content.substring(content.indexOf("\n", content.indexOf("-")));
+		content = content.replace("<p>","").replace("</p>","\n");
+		name = f.getName().substring(0,f.getName().lastIndexOf("."));	
+		Element item;
+		id=Util.generateId();
+		System.out.println(id+" "+name+" "+content);
+		notesName.put(id, name);
+		notesContent.put(id, content);
+		JEditorPane p = new JEditorPane();
+		p.setContentType("text/html");
+		
+		for (Map.Entry<String,String> entry : notesName.entrySet()){
+		        id = entry.getKey();
+		        System.out.println(id+" "+name+" "+content);
+		        p.setText(content);
+		        HTMLDocument doc = (HTMLDocument)p.getDocument();
+		        Note note = CurrentProject.getNoteList().createNoteForDate(CurrentDate.get());
+		note.setTitle(name);
+		        note.setId(Util.generateId());
+		CurrentStorage.get().storeNote(note, doc);
+		}
+		workPanel.dailyItemsPanel.notesControlPane.refresh();
+	}
 
 }
