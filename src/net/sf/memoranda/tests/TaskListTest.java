@@ -15,6 +15,7 @@ import net.sf.memoranda.TaskList;
 import net.sf.memoranda.TaskListImpl;
 import net.sf.memoranda.date.CalendarDate;
 import net.sf.memoranda.util.Configuration;
+import net.sf.memoranda.workinghrs.WorkingHours;
 
 public class TaskListTest {
 
@@ -30,7 +31,7 @@ public class TaskListTest {
         later.add(Calendar.DAY_OF_MONTH, 20);
         CalendarDate startD = new CalendarDate(today);
         CalendarDate endD = new CalendarDate(later);
-        Project proj = ProjectManager.createProject(title, startD, endD);
+        Project proj = ProjectManager.createProject(title, startD, endD, new WorkingHours());
         CurrentProject.set(proj);
         myTaskList = new TaskListImpl(proj);
     }

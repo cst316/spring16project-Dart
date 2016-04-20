@@ -10,6 +10,7 @@ package net.sf.memoranda;
 
 import net.sf.memoranda.date.CalendarDate;
 import net.sf.memoranda.date.CurrentDate;
+import net.sf.memoranda.workinghrs.WorkingHours;
 import nu.xom.Attribute;
 import nu.xom.Element;
 
@@ -96,6 +97,21 @@ public class ProjectImpl implements Project {
         }
         else
             return Project.SCHEDULED;
+    }
+    
+    
+    public WorkingHours getWorkingHours(){
+    	Attribute d = _root.getAttribute("workingHrs");
+        if (d == null) {
+        	return null;
+        }
+        return new WorkingHours(d.getValue());    
+    }
+    
+    public void setWorkingHours(WorkingHours hrs){
+    	if (hrs != null){
+            setAttr("workingHrs", hrs.toString());
+    	}
     }
 
     private boolean isFrozen() {
