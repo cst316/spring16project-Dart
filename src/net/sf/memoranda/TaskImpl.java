@@ -14,6 +14,9 @@ import java.util.Calendar;
 
 import net.sf.memoranda.date.CalendarDate;
 import net.sf.memoranda.date.CurrentDate;
+import net.sf.memoranda.util.Configuration;
+import net.sf.memoranda.util.Util;
+
 import nu.xom.Attribute;
 import nu.xom.Element;
 import nu.xom.Elements;
@@ -27,7 +30,6 @@ public class TaskImpl implements Task, Comparable {
 
     private Element _element = null;
     private TaskList _tl = null;
-
     /**
      * Constructor for DefaultTask.
      */
@@ -40,6 +42,18 @@ public class TaskImpl implements Task, Comparable {
         return _element;
     }
 
+    public String getElapsedTime() {
+    	  return new String(_element.getAttribute("elapsedTime").getValue());
+    }
+
+    public String getPrintableTime() {
+        return timeConversion(Integer.parseInt(new String(_element.getAttribute("elapsedTime").getValue())));
+    }
+
+    public void setElapsedtime(String elapsedTime) {
+           setAttr("elapsedTime", elapsedTime);
+    }
+
     public CalendarDate getStartDate() {
         return new CalendarDate(_element.getAttribute("startDate").getValue());
     }
@@ -49,85 +63,84 @@ public class TaskImpl implements Task, Comparable {
     }
 
     public CalendarDate getEndDate() {
-		String ed = _element.getAttribute("endDate").getValue();
-		if (ed != "")
-			return new CalendarDate(_element.getAttribute("endDate").getValue());
-		Task parent = this.getParentTask();
-		if (parent != null)
-			return parent.getEndDate();
-		Project pr = this._tl.getProject();
-		if (pr.getEndDate() != null)
-			return pr.getEndDate();
-		return this.getStartDate();
-        
+        String ed = _element.getAttribute("endDate").getValue();
+        if (ed != "")
+            return new CalendarDate(_element.getAttribute("endDate").getValue());
+        Task parent = this.getParentTask();
+        if (parent != null)
+            return parent.getEndDate();
+        Project pr = this._tl.getProject();
+        if (pr.getEndDate() != null)
+            return pr.getEndDate();
+        return this.getStartDate();
     }
 
     public void setEndDate(CalendarDate date) {
-		if (date == null)
-			setAttr("endDate", "");
-		setAttr("endDate", date.toString());
+        if (date == null)
+            setAttr("endDate", "");
+        setAttr("endDate", date.toString());
     }
 
     public long getEffort() {
-    	Attribute attr = _element.getAttribute("effort");
-    	if (attr == null) {
-    		return 0;
-    	}
-    	else {
-    		try {
-        		return Long.parseLong(attr.getValue());
-    		}
-    		catch (NumberFormatException e) {
-    			return 0;
-    		}
-    	}
+        Attribute attr = _element.getAttribute("effort");
+        if (attr == null) {
+            return 0;
+        }
+        else {
+            try {
+                return Long.parseLong(attr.getValue());
+            }
+            catch (NumberFormatException e) {
+                return 0;
+            }
+        }
     }
 
     public void setEffort(long effort) {
         setAttr("effort", String.valueOf(effort));
     }
-	
-	/* 
-	 * @see net.sf.memoranda.Task#getParentTask()
-	 */
-	public Task getParentTask() {
-		Node parentNode = _element.getParent();
-    	if (parentNode instanceof Element) {
-    	    Element parent = (Element) parentNode;
-        	if (parent.getLocalName().equalsIgnoreCase("task")) 
-        	    return new TaskImpl(parent, _tl);
-    	}
-    	return null;
-	}
-	
-	public String getParentId() {
-		Task parent = this.getParentTask();
-		if (parent != null)
-			return parent.getID();
-		return null;
-	}
+
+    /*
+     * @see net.sf.memoranda.Task#getParentTask()
+     */
+    public Task getParentTask() {
+        Node parentNode = _element.getParent();
+        if (parentNode instanceof Element) {
+            Element parent = (Element) parentNode;
+            if (parent.getLocalName().equalsIgnoreCase("task"))
+                return new TaskImpl(parent, _tl);
+        }
+        return null;
+    }
+
+    public String getParentId() {
+        Task parent = this.getParentTask();
+        if (parent != null)
+            return parent.getID();
+        return null;
+    }
 
     public String getDescription() {
-    	Element thisElement = _element.getFirstChildElement("description");
-    	if (thisElement == null) {
-    		return null;
-    	}
-    	else {
-       		return thisElement.getValue();
-    	}
+        Element thisElement = _element.getFirstChildElement("description");
+        if (thisElement == null) {
+            return null;
+        }
+        else {
+            return thisElement.getValue();
+        }
     }
 
     public void setDescription(String s) {
-    	Element desc = _element.getFirstChildElement("description");
-    	if (desc == null) {
-        	desc = new Element("description");
+        Element desc = _element.getFirstChildElement("description");
+        if (desc == null) {
+            desc = new Element("description");
             desc.appendChild(s);
-            _element.appendChild(desc);    	
-    	}
-    	else {
+            _element.appendChild(desc);
+        }
+        else {
             desc.removeChildren();
-            desc.appendChild(s);    	
-    	}
+            desc.appendChild(s);
+        }
     }
 
     /**s
@@ -140,20 +153,20 @@ public class TaskImpl implements Task, Comparable {
             return Task.FROZEN;
         if (isCompleted())
                 return Task.COMPLETED;
-        
-		if (date.inPeriod(start, end)) {
+
+        if (date.inPeriod(start, end)) {
             if (date.equals(end))
                 return Task.DEADLINE;
             else
                 return Task.ACTIVE;
         }
-		else if(date.before(start)) {
-				return Task.SCHEDULED;
-		}
-		
-		if(start.after(end)) {
-			return Task.ACTIVE;
-		}
+        else if(date.before(start)) {
+                return Task.SCHEDULED;
+        }
+
+        if(start.after(end)) {
+            return Task.ACTIVE;
+        }
 
         return Task.FAILED;
     }
@@ -198,7 +211,7 @@ public class TaskImpl implements Task, Comparable {
     public String toString() {
         return getText();
     }
-    
+
     /**
      * @see net.sf.memoranda.Task#setText()
      */
@@ -261,14 +274,16 @@ public class TaskImpl implements Task, Comparable {
      * @see net.sf.memoranda.Task#getProgress()
      */
     public int getProgress() {
-        return new Integer(_element.getAttribute("progress").getValue()).intValue();
+        return new
+            Integer(_element.getAttribute("progress").getValue()).intValue();
     }
     /**
      * @see net.sf.memoranda.Task#setProgress(int)
      */
     public void setProgress(int p) {
-        if ((p >= 0) && (p <= 100))
+        if ((p >= 0) && (p <= 100)) {
             setAttr("progress", new Integer(p).toString());
+        }
     }
     /**
      * @see net.sf.memoranda.Task#getPriority()
@@ -294,78 +309,77 @@ public class TaskImpl implements Task, Comparable {
             attr.setValue(value);
     }
 
-	/**
-	 * A "Task rate" is an informal index of importance of the task
-	 * considering priority, number of days to deadline and current 
-	 * progress. 
-	 * 
-	 * rate = (100-progress) / (numOfDays+1) * (priority+1)
-	 * @param CalendarDate
-	 * @return long
-	 */
+    /**
+     * A "Task rate" is an informal index of importance of the task
+     * considering priority, number of days to deadline and current
+     * progress.
+     *
+     * rate = (100-progress) / (numOfDays+1) * (priority+1)
+     * @param CalendarDate
+     * @return long
+     */
 
-	private long calcTaskRate(CalendarDate d) {
-		Calendar endDateCal = getEndDate().getCalendar();
-		Calendar dateCal = d.getCalendar();
-		int numOfDays = (endDateCal.get(Calendar.YEAR)*365 + endDateCal.get(Calendar.DAY_OF_YEAR)) - 
-						(dateCal.get(Calendar.YEAR)*365 + dateCal.get(Calendar.DAY_OF_YEAR));
-		if (numOfDays < 0) return -1; //Something wrong ?
-		return (100-getProgress()) / (numOfDays+1) * (getPriority()+1);
-	}
+    private long calcTaskRate(CalendarDate d) {
+        Calendar endDateCal = getEndDate().getCalendar();
+        Calendar dateCal = d.getCalendar();
+        int numOfDays = (endDateCal.get(Calendar.YEAR)*365 + endDateCal.get(Calendar.DAY_OF_YEAR)) -
+                        (dateCal.get(Calendar.YEAR)*365 + dateCal.get(Calendar.DAY_OF_YEAR));
+        if (numOfDays < 0) return -1; //Something wrong ?
+        return (100-getProgress()) / (numOfDays+1) * (getPriority()+1);
+    }
 
     /**
      * @see net.sf.memoranda.Task#getRate()
      */
-	 
      public long getRate() {
-/*	   Task t = (Task)task;
-	   switch (mode) {
-		   case BY_IMP_RATE: return -1*calcTaskRate(t, date);
-		   case BY_END_DATE: return t.getEndDate().getDate().getTime();
-		   case BY_PRIORITY: return 5-t.getPriority();
-		   case BY_COMPLETION: return 100-t.getProgress();
-	   }
+/*     Task t = (Task)task;
+       switch (mode) {
+           case BY_IMP_RATE: return -1*calcTaskRate(t, date);
+           case BY_END_DATE: return t.getEndDate().getDate().getTime();
+           case BY_PRIORITY: return 5-t.getPriority();
+           case BY_COMPLETION: return 100-t.getProgress();
+       }
        return -1;
 */
-		return -1*calcTaskRate(CurrentDate.get());
-	 }
-	   
-	 /*
-	  * Comparable interface
-	  */
-	  
-	 public int compareTo(Object o) {
-		 Task task = (Task) o;
-		 	if(getRate() > task.getRate())
-				return 1;
-			else if(getRate() < task.getRate())
-				return -1;
-			else 
-				return 0;
-	 }
-	 
-	 public boolean equals(Object o) {
-	     return ((o instanceof Task) && (((Task)o).getID().equals(this.getID())));
-	 }
+        return -1*calcTaskRate(CurrentDate.get());
+     }
 
-	/* 
-	 * @see net.sf.memoranda.Task#getSubTasks()
-	 */
-	public Collection getSubTasks() {
-		Elements subTasks = _element.getChildElements("task");
+     /*
+      * Comparable interface
+      */
+
+     public int compareTo(Object o) {
+         Task task = (Task) o;
+            if(getRate() > task.getRate())
+                return 1;
+            else if(getRate() < task.getRate())
+                return -1;
+            else
+                return 0;
+     }
+
+     public boolean equals(Object o) {
+         return ((o instanceof Task) && (((Task)o).getID().equals(this.getID())));
+     }
+
+    /*
+     * @see net.sf.memoranda.Task#getSubTasks()
+     */
+    public Collection<Task> getSubTasks() {
+        Elements subTasks = _element.getChildElements("task");
             return convertToTaskObjects(subTasks);
-	}
+    }
 
-	private Collection convertToTaskObjects(Elements tasks) {
-        Vector v = new Vector();
+    private Collection<Task> convertToTaskObjects(Elements tasks) {
+        Vector<Task> v = new Vector<Task>();
         for (int i = 0; i < tasks.size(); i++) {
             Task t = new TaskImpl(tasks.get(i), _tl);
             v.add(t);
         }
         return v;
     }
-	
-	/* 
+
+	/*
 	 * @see net.sf.memoranda.Task#getSubTask(java.lang.String)
 	 */
 	public Task getSubTask(String id) {
@@ -377,16 +391,28 @@ public class TaskImpl implements Task, Comparable {
 		return null;
 	}
 
-	/* 
+	/*
 	 * @see net.sf.memoranda.Task#hasSubTasks()
 	 */
 	public boolean hasSubTasks(String id) {
 		Elements subTasks = _element.getChildElements("task");
-		for (int i = 0; i < subTasks.size(); i++) 
+		for (int i = 0; i < subTasks.size(); i++)
 			if (subTasks.get(i).getAttribute("id").getValue().equals(id))
 				return true;
 		return false;
 	}
 
-	
+	// See http://codereview.stackexchange.com/questions/62713/converting-seconds-to-hours-minutes-and-seconds/62819
+	private static String timeConversion(int totalSeconds) {
+		final int MINUTES_IN_AN_HOUR = 60;
+	    final int SECONDS_IN_A_MINUTE = 60;
+
+	    int minutes = totalSeconds / SECONDS_IN_A_MINUTE;
+	    totalSeconds -= minutes * SECONDS_IN_A_MINUTE;
+
+	    int hours = minutes / MINUTES_IN_AN_HOUR;
+	    minutes -= hours * MINUTES_IN_AN_HOUR;
+
+	    return hours + " h : " + minutes + " m : " + totalSeconds + " s";
+    }
 }

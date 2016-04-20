@@ -14,6 +14,7 @@ import net.sf.memoranda.date.CalendarDate;
 import net.sf.memoranda.util.CurrentStorage;
 import net.sf.memoranda.util.Local;
 import net.sf.memoranda.util.Util;
+import net.sf.memoranda.workinghrs.WorkingHours;
 import nu.xom.Attribute;
 import nu.xom.Document;
 import nu.xom.Element;
@@ -40,7 +41,7 @@ public class ProjectManager {
 //            _root.addNamespaceDeclaration("jnotes", NS_JNPROJECT);
 //            _root.appendChild(new Comment("This is JNotes 2 data file. Do not modify."));
             _doc = new Document(_root);
-            createProject("__default", Local.getString("Default project"), CalendarDate.today(), null);
+            createProject("__default", Local.getString("Default project"), CalendarDate.today(), null, new WorkingHours());
         }
         else
             _root = _doc.getRootElement();
@@ -98,7 +99,7 @@ public class ProjectManager {
         return count;
     }
 
-    public static Project createProject(String id, String title, CalendarDate startDate, CalendarDate endDate) {
+    public static Project createProject(String id, String title, CalendarDate startDate, CalendarDate endDate, WorkingHours hrs) {
         Element el = new Element("project");
         el.addAttribute(new Attribute("id", id));
         _root.appendChild(el);
@@ -106,12 +107,13 @@ public class ProjectManager {
         prj.setTitle(title);
         prj.setStartDate(startDate);
         prj.setEndDate(endDate);
+        prj.setWorkingHours(hrs);
         CurrentStorage.get().createProjectStorage(prj);
         return prj;
     }
 
-    public static Project createProject(String title, CalendarDate startDate, CalendarDate endDate) {
-        return createProject(Util.generateId(), title, startDate, endDate);
+    public static Project createProject(String title, CalendarDate startDate, CalendarDate endDate, WorkingHours hrs) {
+        return createProject(Util.generateId(), title, startDate, endDate, hrs);
     }
     
     public static void removeProject(String id) {
