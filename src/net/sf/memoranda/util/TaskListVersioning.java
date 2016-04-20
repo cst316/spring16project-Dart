@@ -5,6 +5,7 @@
 package net.sf.memoranda.util;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.util.Iterator;
 import java.util.Vector;
 
@@ -80,52 +81,54 @@ public class TaskListVersioning {
 
     private static void upgrade1_1d1(String[] projectIds) {
         for (int i = 0; i < projectIds.length; i++) {
-            Util.debug("Upgrading project " + projectIds[i] + " from version 1.0 to version 1.1d1");
 
             String filePath = FileStorage.JN_DOCPATH + projectIds[i] + File.separator + ".tasklist";
-            Document doc = FileStorage.openDocument(filePath);
+            if(FileStorage.documentExists(filePath)) {
+            	Util.debug("Upgrading project " + projectIds[i] + " from version 1.0 to version 1.1d1");
+	            Document doc = FileStorage.openDocument(filePath);
 
-            Element root = doc.getRootElement();
-            Elements tasks = root.getChildElements("task");
-            
-            for (int j = 0; j < tasks.size(); j++) {
-                Element task = tasks.get(j );
+	            Element root = doc.getRootElement();
+	            Elements tasks = root.getChildElements("task");
 
-//	Decided not to change the date format after all but I'm leaving this code here
-//	in case we need it later. Ryan
-//                SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-//
-//                Attribute startDateAttr = task.getAttribute("startDate");
-//                Date startDate = (new CalendarDate(startDateAttr.getValue(),"/")).getDate();
-//                startDateAttr.setValue(sdf.format(startDate));
-//
-//                Attribute endDateAttr = task.getAttribute("endDate");
-//                if (endDateAttr != null) {
-//                    Date endDate = (new CalendarDate(endDateAttr.getValue(),"/")).getDate();
-//                    endDateAttr.setValue(sdf.format(endDate));
-//                }
-                if(task.getAttributeCount() < 7){
-                	task.addAttribute(new Attribute("elapsedTime", "0"));
-                }
-                Attribute parentAttr = task.getAttribute("parent");
-            	if ((parentAttr == null) || (parentAttr.getValue() == "")) {
-            		// no parent, do nothing here
-            	}
-            	else {
-                	// put the task under the parent task
-                    String parentId = parentAttr.getValue();
-                    for (int k = 0; k < tasks.size(); k++) {
-                        Element potentialParent = tasks.get(k);
-                        if(parentId.equals(potentialParent.getAttribute("id").getValue())) {
-                            // found parent, put self under it
-                            task.removeAttribute(parentAttr);
-                            task.detach();
-                            potentialParent.appendChild(task);
-                        }
-                    }
-            	}
-            }
-            FileStorage.saveDocument(doc,filePath);
+	            for (int j = 0; j < tasks.size(); j++) {
+	                Element task = tasks.get(j );
+
+	//	Decided not to change the date format after all but I'm leaving this code here
+	//	in case we need it later. Ryan
+	//                SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+	//
+	//                Attribute startDateAttr = task.getAttribute("startDate");
+	//                Date startDate = (new CalendarDate(startDateAttr.getValue(),"/")).getDate();
+	//                startDateAttr.setValue(sdf.format(startDate));
+	//
+	//                Attribute endDateAttr = task.getAttribute("endDate");
+	//                if (endDateAttr != null) {
+	//                    Date endDate = (new CalendarDate(endDateAttr.getValue(),"/")).getDate();
+	//                    endDateAttr.setValue(sdf.format(endDate));
+	//                }
+	                if(task.getAttributeCount() < 7){
+	                	task.addAttribute(new Attribute("elapsedTime", "0"));
+	                }
+	                Attribute parentAttr = task.getAttribute("parent");
+	              	if ((parentAttr == null) || (parentAttr.getValue() == "")) {
+	              		// no parent, do nothing here
+	              	}
+	              	else {
+	                  	// put the task under the parent task
+	                      String parentId = parentAttr.getValue();
+	                      for (int k = 0; k < tasks.size(); k++) {
+	                          Element potentialParent = tasks.get(k);
+	                          if(parentId.equals(potentialParent.getAttribute("id").getValue())) {
+	                              // found parent, put self under it
+	                              task.removeAttribute(parentAttr);
+	                              task.detach();
+	                              potentialParent.appendChild(task);
+	                          }
+	                      }
+	            	  }
+	            }
+	            FileStorage.saveDocument(doc,filePath);
+	         }
         }
     }
 }
